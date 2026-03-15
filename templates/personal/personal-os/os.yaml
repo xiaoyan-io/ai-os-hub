@@ -1,0 +1,16 @@
+id: personal-os
+category: personal
+name: Personal OS
+version: "1.0.0"
+description: Personal AI assistant for daily tasks
+language: {{LANGUAGE}}
+node: {{NODE_NAME}}
+
+personas:
+  - user
+  - assistant
+
+config:
+  workspace_type: personal
+  communication_style: casual
+  default_language: {{LANGUAGE}}

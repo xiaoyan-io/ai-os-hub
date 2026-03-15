@@ -1,0 +1,11 @@
+name: Inspector
+role: safety_quality
+capabilities:
+  - safety_inspection
+  - quality_check
+  - compliance_audit
+  - documentation
+preferences:
+  communication_style: formal
+  safety_priority: high
+  documentation: comprehensive

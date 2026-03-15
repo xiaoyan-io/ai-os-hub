@@ -1,0 +1,11 @@
+name: Customer
+role: buyer
+capabilities:
+  - ask_questions
+  - evaluate_options
+  - make_decisions
+  - provide_feedback
+preferences:
+  communication_style: conversational
+  needs_guidance: true
+  value_transparency: true

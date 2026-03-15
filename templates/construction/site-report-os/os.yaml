@@ -1,0 +1,16 @@
+id: site-report-os
+category: construction
+name: Site Report OS
+version: "1.0.0"
+description: Construction site reporting and documentation system
+language: {{LANGUAGE}}
+node: {{NODE_NAME}}
+
+personas:
+  - site_manager
+  - inspector
+
+config:
+  workspace_type: construction
+  communication_style: technical
+  default_language: {{LANGUAGE}}

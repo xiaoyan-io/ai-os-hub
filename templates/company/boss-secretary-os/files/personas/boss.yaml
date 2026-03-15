@@ -1,0 +1,11 @@
+name: Boss
+role: executive
+capabilities:
+  - set_priorities
+  - make_decisions
+  - delegate_work
+  - review_documents
+preferences:
+  communication_style: formal
+  meeting_duration: 30m
+  focus_time_morning: true

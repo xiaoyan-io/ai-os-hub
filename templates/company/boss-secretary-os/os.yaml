@@ -1,0 +1,16 @@
+id: boss-secretary-os
+category: company
+name: Boss Secretary OS
+version: "1.0.0"
+description: Executive assistant system for boss-secretary workflow
+language: {{LANGUAGE}}
+node: {{NODE_NAME}}
+
+personas:
+  - boss
+  - secretary
+
+config:
+  workspace_type: corporate
+  communication_style: formal
+  default_language: {{LANGUAGE}}

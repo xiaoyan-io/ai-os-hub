@@ -1,0 +1,52 @@
+categories:
+  - id: company
+    name: Company OS
+    description: Enterprise and business operation systems
+  - id: sales
+    name: Sales OS
+    description: Sales and customer engagement systems
+  - id: construction
+    name: Construction OS
+    description: Construction and site management systems
+  - id: personal
+    name: Personal OS
+    description: Personal productivity and life management systems
+
+templates:
+  - id: boss-secretary-os
+    category: company
+    name: Boss Secretary OS
+    description: Executive assistant system for boss-secretary workflow
+    version: "1.0.0"
+  - id: chat-sales-os
+    category: sales
+    name: Chat Sales OS
+    description: AI-powered sales conversation system
+    version: "1.0.0"
+  - id: site-report-os
+    category: construction
+    name: Site Report OS
+    description: Construction site reporting and documentation system
+    version: "1.0.0"
+  - id: personal-os
+    category: personal
+    name: Personal OS
+    description: Personal AI assistant for daily tasks
+    version: "1.0.0"
+  - id: family-care-os
+    category: personal
+    name: Family Care OS
+    description: Family health and care management system
+    version: "1.0.0"
+
+placeholders:
+  - key: COMPANY_NAME
+    description: Company name for business templates
+  - key: FAMILY_NAME
+    description: Family name for personal templates
+  - key: NODE_NAME
+    description: Node identifier
+    default_value: sg2
+  - key: LANGUAGE
+    description: Language code
+    default_value: en

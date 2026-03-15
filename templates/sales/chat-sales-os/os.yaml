@@ -1,0 +1,16 @@
+id: chat-sales-os
+category: sales
+name: Chat Sales OS
+version: "1.0.0"
+description: AI-powered sales conversation system
+language: {{LANGUAGE}}
+node: {{NODE_NAME}}
+
+personas:
+  - sales_agent
+  - customer
+
+config:
+  workspace_type: sales
+  communication_style: friendly
+  default_language: {{LANGUAGE}}

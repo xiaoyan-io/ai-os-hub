@@ -1,0 +1,20 @@
+personas:
+  site_manager:
+    name: Site Manager
+    role: project_manager
+    communication_style: technical
+    capabilities:
+      - daily_reporting
+      - progress_tracking
+      - issue_documentation
+      - team_coordination
+
+  inspector:
+    name: Inspector
+    role: safety_quality
+    communication_style: formal_technical
+    capabilities:
+      - safety_inspection
+      - quality_control
+      - compliance_verification
+      - violation_documentation

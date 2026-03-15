@@ -1,0 +1,11 @@
+name: Site Manager
+role: project_manager
+capabilities:
+  - coordinate_operations
+  - track_progress
+  - manage_workforce
+  - report_stakeholders
+preferences:
+  communication_style: technical
+  report_frequency: daily
+  documentation: thorough

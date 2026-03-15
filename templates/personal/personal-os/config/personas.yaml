@@ -1,0 +1,19 @@
+personas:
+  user:
+    name: User
+    role: owner
+    communication_style: casual
+    capabilities:
+      - set_tasks
+      - receive_assistance
+      - make_decisions
+
+  assistant:
+    name: Personal Assistant
+    role: ai_helper
+    communication_style: friendly
+    capabilities:
+      - task_management
+      - schedule_organization
+      - information_retrieval
+      - daily_assistance
