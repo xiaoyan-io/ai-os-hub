@@ -17,4 +17,22 @@ else
     exit 1
 fi
 
+# Check personal role files
+for f in IDENTITY.md SOUL.md TASKS.md; do
+    if [[ -f "$WORKSPACE/personal/$f" ]]; then
+        echo "PASS: personal/$f exists"
+    else
+        echo "FAIL: personal/$f not found"
+        exit 1
+    fi
+done
+
+# Check shared README
+if [[ -f "$WORKSPACE/shared/README.md" ]]; then
+    echo "PASS: shared/README.md exists"
+else
+    echo "FAIL: shared/README.md not found"
+    exit 1
+fi
+
 echo "All tests passed for personal-os"

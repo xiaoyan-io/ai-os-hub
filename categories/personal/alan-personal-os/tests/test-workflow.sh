@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-echo "Testing personal-os workflow..."
+echo "Testing alan-personal-os workflow..."
 
 WORKSPACE="${1:-.}"
 
@@ -17,4 +17,22 @@ else
     exit 1
 fi
 
-echo "All tests passed for personal-os"
+# Check personal role files
+for f in IDENTITY.md SOUL.md TASKS.md; do
+    if [[ -f "$WORKSPACE/personal/$f" ]]; then
+        echo "PASS: personal/$f exists"
+    else
+        echo "FAIL: personal/$f not found"
+        exit 1
+    fi
+done
+
+# Check shared README
+if [[ -f "$WORKSPACE/shared/README.md" ]]; then
+    echo "PASS: shared/README.md exists"
+else
+    echo "FAIL: shared/README.md not found"
+    exit 1
+fi
+
+echo "All tests passed for alan-personal-os"

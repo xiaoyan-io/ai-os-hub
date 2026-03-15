@@ -16,3 +16,9 @@
 - Brief secretary on requirements
 - Provide updates on status
 - Share strategic insights
+
+## Document Review
+- Review and approve outgoing documents
+- Provide edits and directional feedback
+- Sign off on final versions
+- Archive important decisions and correspondence
