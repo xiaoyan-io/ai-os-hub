@@ -196,18 +196,22 @@ prompt_language() {
 }
 
 prompt_optional_fields() {
+    local input
     echo ""
-    echo "Optional Configuration:"
-    echo "----------------------"
+    echo "Optional Configuration (press Enter to skip each):"
+    echo "-----------------------------------------------"
     
-    echo -n "Telegram token (skip with Enter): "
-    read -r TELEGRAM_TOKEN
+    echo -n "Telegram token: "
+    read -r input
+    [[ -n "$input" ]] && TELEGRAM_TOKEN="$input"
     
-    echo -n "API key (skip with Enter): "
-    read -r API_KEY
+    echo -n "API key: "
+    read -r input
+    [[ -n "$input" ]] && API_KEY="$input"
     
-    echo -n "Base URL (skip with Enter): "
-    read -r BASE_URL
+    echo -n "Base URL: "
+    read -r input
+    [[ -n "$input" ]] && BASE_URL="$input"
 }
 
 print_summary() {
@@ -241,12 +245,13 @@ print_summary() {
 }
 
 confirm_install() {
+    local confirm
     while true; do
         echo ""
         echo -n "Proceed with installation? [Y/n]: "
         read -r confirm
         
-        if [[ -z "$confirm" ]] || [[ "$confirm" =~ ^[Yy]$ ]]; then
+        if [[ "$confirm" =~ ^[Yy]$ ]] || [[ -z "$confirm" ]]; then
             return 0
         elif [[ "$confirm" =~ ^[Nn]$ ]]; then
             echo "Installation cancelled."
