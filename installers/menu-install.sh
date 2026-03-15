@@ -128,11 +128,12 @@ prompt_workspace() {
 }
 
 prompt_node() {
-    echo -n "Node name [sg2]: "
+    DEFAULT_NODE=$(hostname)
+    echo -n "Node name [$DEFAULT_NODE]: "
     read -r NODE
     
     if [[ -z "$NODE" ]]; then
-        NODE="sg2"
+        NODE="$DEFAULT_NODE"
     fi
 }
 

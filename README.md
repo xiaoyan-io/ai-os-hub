@@ -77,7 +77,7 @@ bash installers/install-os.sh \
   --category company \
   --os boss-secretary-os \
   --workspace /path/to/workspace \
-  --node sg2 \
+  --node default \
   --company-name "My Company" \
   --language en
 ```
@@ -86,7 +86,7 @@ Parameters:
 - `--category`: Template category (company, sales, construction, personal)
 - `--os`: OS template ID
 - `--workspace`: Target workspace path
-- `--node`: Node identifier (default: sg2)
+- `--node`: Node identifier (default: default)
 - `--telegram-token`: Telegram bot token (optional)
 - `--api-key`: OpenAI API key (optional)
 - `--base-url`: Base URL for API (optional)

@@ -6,7 +6,7 @@ render_placeholders() {
     local target_dir="$2"
     local company_name="${3:-}"
     local family_name="${4:-}"
-    local node_name="${5:-sg2}"
+    local node_name="${5:-default}"
     local language="${6:-en}"
     
     find "$target_dir" -type f \( -name "*.md" -o -name "*.yaml" -o -name "*.yml" -o -name "*.sh" -o -name "*.txt" -o -name "*.env" \) 2>/dev/null | while read -r file; do
@@ -28,7 +28,7 @@ render_placeholders() {
 
 generate_env_file() {
     local target_dir="$1"
-    local node_name="${2:-sg2}"
+    local node_name="${2:-default}"
     local telegram_token="${3:-}"
     local api_key="${4:-}"
     local base_url="${5:-}"

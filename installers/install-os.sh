@@ -17,7 +17,7 @@ OPTIONS:
     --category CATEGORY      Template category (company, sales, construction, personal)
     --os OS_NAME             OS template name
     --workspace PATH         Target workspace path
-    --node NODE              Node identifier (default: sg2)
+    --node NODE              Node identifier (default: default)
     --telegram-token TOKEN   Telegram bot token
     --api-key KEY            API key
     --base-url URL           Base URL for API
@@ -28,7 +28,7 @@ OPTIONS:
     -h, --help               Show this help message
 
 EXAMPLES:
-    $0 --category company --os boss-secretary-os --workspace /root/workspace-test --node sg2 --company-name "My Company" --language en
+    $0 --category company --os boss-secretary-os --workspace /root/workspace-test --node default --company-name "My Company" --language en
 
 EOF
     exit 1
@@ -37,7 +37,7 @@ EOF
 CATEGORY=""
 OS_NAME=""
 WORKSPACE=""
-NODE="sg2"
+NODE="default"
 TELEGRAM_TOKEN=""
 API_KEY=""
 BASE_URL=""
