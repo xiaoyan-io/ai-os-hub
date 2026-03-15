@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Check required files exist
+        run: |
+          echo "=== Checking required files ==="
+          [[ -f "install.sh" ]] && echo "✓ install.sh exists" || { echo "✗ install.sh missing"; exit 1; }
+          [[ -x "install.sh" ]] && echo "✓ install.sh is executable" || { echo "✗ install.sh not executable"; exit 1; }
+          [[ -f "installers/install-os.sh" ]] && echo "✓ installers/install-os.sh exists" || exit 1
+          [[ -x "installers/install-os.sh" ]] && echo "✓ installers/install-os.sh is executable" || exit 1
+          [[ -f "installers/menu-install.sh" ]] && echo "✓ installers/menu-install.sh exists" || exit 1
+          [[ -f "registry.yaml" ]] && echo "✓ registry.yaml exists" || exit 1
+          echo "=== All required files present ==="
+      
+      - name: Check templates have os.yaml
+        run: |
+          echo "=== Checking template os.yaml files ==="
+          count=$(find categories -name "os.yaml" | wc -l)
+          echo "Found $count templates with os.yaml"
+          [[ $count -ge 5 ]] || { echo "Need at least 5 templates"; exit 1; }
+          echo "=== Template check passed ==="
+      
+      - name: Test template installation
+        run: |
+          echo "=== Testing template installation ==="
+          
+          # Test 1: alan-personal-os
+          echo "Testing alan-personal-os..."
+          WORKSPACE=$(mktemp -d)
+          bash installers/install-os.sh \
+            --category personal \
+            --os alan-personal-os \
+            --workspace "$WORKSPACE" \
+            --language en \
+            --skip-openclaw
+          
+          [[ -d "$WORKSPACE/.generated" ]] || { echo "Missing .generated dir"; exit 1; }
+          [[ -f "$WORKSPACE/.generated/.env" ]] || { echo "Missing .env"; exit 1; }
+          [[ -d "$WORKSPACE/personal" ]] || { echo "Missing personal role dir"; exit 1; }
+          echo "✓ alan-personal-os installed successfully"
+          
+          # Run smoke test
+          echo "Running smoke test..."
+          bash smoke-tests/base.sh --workspace "$WORKSPACE" --role personal
+          echo "✓ Smoke test passed"
+          
+          # Cleanup
+          rm -rf "$WORKSPACE"
+          echo "=== Test 1 passed ==="
+      
+      - name: Test second template
+        run: |
+          echo "=== Testing second template ==="
+          
+          # Test 2: alan-boss-os
+          echo "Testing alan-boss-os..."
+          WORKSPACE=$(mktemp -d)
+          bash installers/install-os.sh \
+            --category company \
+            --os alan-boss-os \
+            --workspace "$WORKSPACE" \
+            --company-name "Test Corp" \
+            --language en \
+            --skip-openclaw
+          
+          [[ -d "$WORKSPACE/boss" ]] || { echo "Missing boss role dir"; exit 1; }
+          [[ -d "$WORKSPACE/secretary" ]] || { echo "Missing secretary role dir"; exit 1; }
+          echo "✓ alan-boss-os installed successfully"
+          
+          # Smoke test for both roles
+          bash smoke-tests/base.sh --workspace "$WORKSPACE" --role boss
+          bash smoke-tests/base.sh --workspace "$WORKSPACE" --role secretary
+          echo "✓ Smoke tests passed"
+          
+          rm -rf "$WORKSPACE"
+          echo "=== Test 2 passed ==="
+      
+      - name: Check shell scripts syntax
+        run: |
+          echo "=== Checking shell script syntax ==="
+          for f in install.sh installers/*.sh smoke-tests/*.sh; do
+            [[ -f "$f" ]] && bash -n "$f" && echo "✓ $f syntax OK" || { echo "✗ $f syntax error"; exit 1; }
+          done
+          echo "=== All scripts syntactically valid ==="
