@@ -1,11 +1,33 @@
 #!/bin/bash
 set -uo pipefail
 
-WORKSPACE="${1:-}"
+WORKSPACE=""
+ROLE=""
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --workspace)
+            WORKSPACE="$2"
+            shift 2
+            ;;
+        --role)
+            ROLE="$2"
+            shift 2
+            ;;
+        -h|--help)
+            echo "Usage: $0 --workspace <path> --role <role-name>"
+            echo "Example: $0 --workspace /root/workspace-test-boss --role boss"
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $1"
+            exit 1
+            ;;
+    esac
+done
 
 if [[ -z "$WORKSPACE" ]]; then
-    echo "Usage: $0 <workspace-path>"
-    echo "Example: $0 /root/workspace-test-boss"
+    echo "ERROR: --workspace is required"
     exit 1
 fi
 
@@ -34,9 +56,12 @@ test_generated_env() {
     fi
 }
 
-test_personas_directory() {
-    echo -n "Testing personas directory exists: "
-    if [[ -d "$WORKSPACE/personas" ]]; then
+test_role_directory() {
+    if [[ -z "$ROLE" ]]; then
+        return
+    fi
+    echo -n "Testing role directory exists ($ROLE): "
+    if [[ -d "$WORKSPACE/$ROLE" ]]; then
         echo "PASS"
         TESTS_PASSED=$((TESTS_PASSED + 1))
     else
@@ -45,9 +70,12 @@ test_personas_directory() {
     fi
 }
 
-test_config_directory() {
-    echo -n "Testing config directory exists: "
-    if [[ -d "$WORKSPACE/config" ]]; then
+test_role_soul() {
+    if [[ -z "$ROLE" ]]; then
+        return
+    fi
+    echo -n "Testing $ROLE/SOUL.md exists: "
+    if [[ -f "$WORKSPACE/$ROLE/SOUL.md" ]]; then
         echo "PASS"
         TESTS_PASSED=$((TESTS_PASSED + 1))
     else
@@ -56,9 +84,26 @@ test_config_directory() {
     fi
 }
 
-test_readme_exists() {
-    echo -n "Testing README.md exists: "
-    if [[ -f "$WORKSPACE/README.md" ]]; then
+test_role_identity() {
+    if [[ -z "$ROLE" ]]; then
+        return
+    fi
+    echo -n "Testing $ROLE/IDENTITY.md exists: "
+    if [[ -f "$WORKSPACE/$ROLE/IDENTITY.md" ]]; then
+        echo "PASS"
+        TESTS_PASSED=$((TESTS_PASSED + 1))
+    else
+        echo "FAIL"
+        TESTS_FAILED=$((TESTS_FAILED + 1))
+    fi
+}
+
+test_role_tasks() {
+    if [[ -z "$ROLE" ]]; then
+        return
+    fi
+    echo -n "Testing $ROLE/TASKS.md exists: "
+    if [[ -f "$WORKSPACE/$ROLE/TASKS.md" ]]; then
         echo "PASS"
         TESTS_PASSED=$((TESTS_PASSED + 1))
     else
@@ -71,12 +116,19 @@ echo "========================================"
 echo "  Smoke Tests - Base"
 echo "========================================"
 echo ""
+echo "Workspace: $WORKSPACE"
+[[ -n "$ROLE" ]] && echo "Role: $ROLE"
+echo ""
 
 test_workspace_exists
 test_generated_env
-test_personas_directory
-test_config_directory
-test_readme_exists
+
+if [[ -n "$ROLE" ]]; then
+    test_role_directory
+    test_role_soul
+    test_role_identity
+    test_role_tasks
+fi
 
 echo ""
 echo "========================================"

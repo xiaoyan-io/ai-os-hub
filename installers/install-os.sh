@@ -123,19 +123,8 @@ if [[ -d "$TEMPLATE_PATH/files" ]]; then
     cp -r "$TEMPLATE_PATH/files"/* "$WORKSPACE/" 2>/dev/null || true
 fi
 
-if [[ -d "$TEMPLATE_PATH/config" ]]; then
-    mkdir -p "$WORKSPACE/config"
-    cp -r "$TEMPLATE_PATH/config"/* "$WORKSPACE/config/" 2>/dev/null || true
-fi
-
-for file in README.md SOUL.md IDENTITY.md TASKS.md os.yaml; do
-    if [[ -f "$TEMPLATE_PATH/$file" ]]; then
-        cp "$TEMPLATE_PATH/$file" "$WORKSPACE/" 2>/dev/null || true
-    fi
-done
-
 log_info "Generating configuration..."
-generate_env_file "$WORKSPACE" "$NODE" "$TELEGRAM_TOKEN" "$API_KEY" "$BASE_URL" "$COMPANY_NAME" "$FAMILY_NAME" "$LANGUAGE"
+generate_env_file "$WORKSPACE" "$NODE" "$TELEGRAM_TOKEN" "$API_KEY" "$BASE_URL" "$COMPANY_NAME" "$FAMILY_NAME" "$LANGUAGE" "$CATEGORY" "$OS_NAME"
 
 log_info "Rendering placeholders..."
 render_placeholders "$TEMPLATE_PATH" "$WORKSPACE" "$COMPANY_NAME" "$FAMILY_NAME" "$NODE" "$LANGUAGE"

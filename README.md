@@ -1,4 +1,4 @@
-# AI OS Hub
+# AI OS Hub v0.1
 
 A collection of AI operating system templates for OpenClaw.
 
@@ -10,20 +10,45 @@ AI OS Hub provides pre-built operating system templates for various use cases. E
 
 ```
 ai-os-hub/
-├── categories/          # Category definitions
-├── installers/          # Installation scripts
-│   ├── common.sh        # Shared functions
-│   ├── render-config.sh # Template rendering
-│   ├── install-os.sh    # Direct OS installer
-│   └── menu-install.sh  # Interactive menu installer
-├── templates/           # OS templates
-│   ├── company/         # Company category templates
-│   ├── sales/           # Sales category templates
-│   ├── construction/    # Construction category templates
-│   └── personal/        # Personal category templates
-├── smoke-tests/         # Test scripts
-├── registry.yaml        # Template registry
+├── categories/              # OS templates
+│   ├── company/            # Company category templates
+│   │   └── boss-secretary-os/
+│   ├── sales/              # Sales category templates
+│   │   └── chat-sales-os/
+│   ├── construction/      # Construction category templates
+│   │   └── site-report-os/
+│   └── personal/           # Personal category templates
+│       ├── personal-os/
+│       └── family-care-os/
+├── installers/             # Installation scripts
+│   ├── common.sh          # Shared functions
+│   ├── render-config.sh   # Template rendering
+│   ├── install-os.sh      # Direct OS installer
+│   └── menu-install.sh    # Interactive menu installer
+├── smoke-tests/            # Test scripts
+├── registry.yaml          # Template registry
 └── README.md
+```
+
+## Template Directory Standard
+
+Each OS template follows this structure:
+
+```
+<os-name>/
+├── os.yaml           # OS definition (not copied to workspace)
+├── files/            # Files copied to workspace
+│   ├── <role-1>/
+│   │   ├── SOUL.md
+│   │   ├── IDENTITY.md
+│   │   └── TASKS.md
+│   ├── <role-2>/
+│   │   ├── SOUL.md
+│   │   ├── IDENTITY.md
+│   │   └── TASKS.md
+│   └── shared/
+│       └── README.md
+└── tests/            # Template tests
 ```
 
 ## Available OS Templates
@@ -63,7 +88,7 @@ Parameters:
 - `--workspace`: Target workspace path
 - `--node`: Node identifier (default: sg2)
 - `--telegram-token`: Telegram bot token (optional)
-- `--api-key`: API key (optional)
+- `--api-key`: OpenAI API key (optional)
 - `--base-url`: Base URL for API (optional)
 - `--company-name`: Company name (optional)
 - `--family-name`: Family name (optional)
@@ -78,11 +103,25 @@ Menu-driven installation:
 bash installers/menu-install.sh
 ```
 
-This will:
-1. Display available categories
-2. Let you select an OS template
-3. Prompt for configuration details
-4. Install automatically
+## Workspace Output Structure
+
+After installation, the workspace will have:
+
+```
+<workspace>/
+├── .generated/
+│   └── .env           # Environment variables
+├── boss/              # Role directory
+│   ├── SOUL.md
+│   ├── IDENTITY.md
+│   └── TASKS.md
+├── secretary/         # Role directory
+│   ├── SOUL.md
+│   ├── IDENTITY.md
+│   └── TASKS.md
+└── shared/
+    └── README.md
+```
 
 ## Supported Placeholders
 
@@ -97,7 +136,11 @@ Templates support the following placeholders:
 Run smoke tests:
 
 ```bash
-bash smoke-tests/base.sh /path/to/workspace
+# Test workspace without role
+bash smoke-tests/base.sh --workspace /path/to/workspace
+
+# Test workspace with specific role
+bash smoke-tests/base.sh --workspace /path/to/workspace --role boss
 ```
 
 ## Requirements

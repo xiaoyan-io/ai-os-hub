@@ -9,13 +9,7 @@ render_placeholders() {
     local node_name="${5:-sg2}"
     local language="${6:-en}"
     
-    mkdir -p "$target_dir"
-    
-    if [[ -d "$source_dir/files" ]]; then
-        cp -r "$source_dir/files"/* "$target_dir/" 2>/dev/null || true
-    fi
-    
-    find "$target_dir" -type f -name "*.md" -o -name "*.yaml" -o -name "*.yml" -o -name "*.sh" -o -name "*.txt" 2>/dev/null | while read -r file; do
+    find "$target_dir" -type f \( -name "*.md" -o -name "*.yaml" -o -name "*.yml" -o -name "*.sh" -o -name "*.txt" -o -name "*.env" \) 2>/dev/null | while read -r file; do
         local content
         content=$(cat "$file")
         
@@ -41,6 +35,8 @@ generate_env_file() {
     local company_name="${6:-}"
     local family_name="${7:-}"
     local language="${8:-en}"
+    local category="${9:-}"
+    local os_id="${10:-}"
     
     local generated_dir="$target_dir/.generated"
     mkdir -p "$generated_dir"
@@ -48,10 +44,12 @@ generate_env_file() {
     cat > "$generated_dir/.env" << EOF
 NODE_NAME=$node_name
 TELEGRAM_TOKEN=$telegram_token
-API_KEY=$api_key
-BASE_URL=$base_url
+OPENAI_API_KEY=$api_key
+OPENAI_BASE_URL=$base_url
 COMPANY_NAME=$company_name
 FAMILY_NAME=$family_name
 LANGUAGE=$language
+CATEGORY=$category
+OS_ID=$os_id
 EOF
 }

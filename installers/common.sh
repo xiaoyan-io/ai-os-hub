@@ -24,7 +24,7 @@ check_dependencies() {
 get_template_path() {
     local category="$1"
     local os_name="$2"
-    echo "$HUB_ROOT/templates/$category/$os_name"
+    echo "$HUB_ROOT/categories/$category/$os_name"
 }
 
 validate_os_exists() {
