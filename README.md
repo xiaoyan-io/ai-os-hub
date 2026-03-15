@@ -6,102 +6,117 @@ A collection of AI operating system templates for OpenClaw.
 
 AI OS Hub provides pre-built operating system templates for various use cases. Each template includes persona definitions, task configurations, and file structures needed to deploy a complete AI OS.
 
+## Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/xiaoyan-io/ai-os-hub.git
+cd ai-os-hub
+
+# Interactive installation (recommended)
+bash install.sh
+
+# Or direct installation
+bash installers/install-os.sh \
+  --category personal \
+  --os alan-personal-os \
+  --workspace ~/my-workspace \
+  --language en
+```
+
 ## Directory Structure
 
 ```
 ai-os-hub/
-├── categories/              # OS templates
-│   ├── company/            # Company category templates
-│   │   └── boss-secretary-os/
-│   ├── sales/              # Sales category templates
-│   │   └── chat-sales-os/
-│   ├── construction/      # Construction category templates
-│   │   └── site-report-os/
-│   └── personal/           # Personal category templates
-│       ├── personal-os/
-│       └── family-care-os/
-├── installers/             # Installation scripts
-│   ├── common.sh          # Shared functions
-│   ├── render-config.sh   # Template rendering
-│   ├── install-os.sh      # Direct OS installer
-│   └── menu-install.sh    # Interactive menu installer
-├── smoke-tests/            # Test scripts
-├── registry.yaml          # Template registry
+├── install.sh              # Unified entry point (calls menu-install.sh)
+├── categories/             # OS templates
+│   ├── company/           # Company category templates
+│   ├── sales/             # Sales category templates
+│   ├── construction/       # Construction category templates
+│   └── personal/          # Personal category templates
+├── installers/            # Installation scripts
+│   ├── common.sh         # Shared functions
+│   ├── render-config.sh  # Template rendering
+│   ├── install-os.sh     # Direct OS installer
+│   └── menu-install.sh  # Interactive menu installer
+├── smoke-tests/          # Test scripts
+├── registry.yaml         # Template registry
 └── README.md
-```
-
-## Template Directory Standard
-
-Each OS template follows this structure:
-
-```
-<os-name>/
-├── os.yaml           # OS definition (not copied to workspace)
-├── files/            # Files copied to workspace
-│   ├── <role-1>/
-│   │   ├── SOUL.md
-│   │   ├── IDENTITY.md
-│   │   └── TASKS.md
-│   ├── <role-2>/
-│   │   ├── SOUL.md
-│   │   ├── IDENTITY.md
-│   │   └── TASKS.md
-│   └── shared/
-│       └── README.md
-└── tests/            # Template tests
 ```
 
 ## Available OS Templates
 
 ### Company OS
 - **boss-secretary-os**: Executive assistant system for boss-secretary workflow
+- **alan-boss-os**: Personal-use executive template for internal summaries and directives
 
 ### Sales OS
 - **chat-sales-os**: AI-powered sales conversation system
+- **alan-sales-os**: Personal-use sales follow-up template for lead intake and chat closing
 
 ### Construction OS
 - **site-report-os**: Construction site reporting and documentation system
 
 ### Personal OS
 - **personal-os**: Personal AI assistant for daily tasks
+- **alan-personal-os**: Personal-use AI assistant for daily tasks, notes, planning and project organization
 - **family-care-os**: Family health and care management system
+- **alan-family-care-os**: Personal-use family care helper for household reminders and care coordination
+
+## Personal-Use Templates
+
+The `alan-*` templates are customized versions designed for personal use:
+
+| Template | Purpose |
+|----------|---------|
+| `alan-personal-os` | Personal note-taking, planning, project organization |
+| `alan-family-care-os` | Family health reminders, symptom tracking, care coordination |
+| `alan-boss-os` | Executive summaries, directives, priority tracking |
+| `alan-sales-os` | Lead intake, chat follow-up, client closing |
 
 ## Installation
 
-### Quick Install (install-os.sh)
+### Option 1: Interactive Menu (Recommended)
 
-Direct installation with parameters:
+```bash
+bash install.sh
+# or
+bash installers/menu-install.sh
+```
+
+Features:
+- Select category and OS from menu
+- Dynamic prompts based on template type
+- Validation for required fields
+- Installation summary before execution
+- Default values with Enter key
+
+### Option 2: Direct Installation
 
 ```bash
 bash installers/install-os.sh \
-  --category company \
-  --os boss-secretary-os \
-  --workspace /path/to/workspace \
+  --category personal \
+  --os alan-personal-os \
+  --workspace ~/my-workspace \
   --node default \
-  --company-name "My Company" \
   --language en
 ```
 
-Parameters:
-- `--category`: Template category (company, sales, construction, personal)
-- `--os`: OS template ID
-- `--workspace`: Target workspace path
-- `--node`: Node identifier (default: default)
-- `--telegram-token`: Telegram bot token (optional)
-- `--api-key`: OpenAI API key (optional)
-- `--base-url`: Base URL for API (optional)
-- `--company-name`: Company name (optional)
-- `--family-name`: Family name (optional)
-- `--language`: Language code (default: en)
-- `--skip-openclaw`: Skip OpenClaw installation
+**Parameters:**
 
-### Interactive Install (menu-install.sh)
-
-Menu-driven installation:
-
-```bash
-bash installers/menu-install.sh
-```
+| Parameter | Required | Description | Default |
+|-----------|----------|-------------|---------|
+| `--category` | Yes | Template category | - |
+| `--os` | Yes | OS template ID | - |
+| `--workspace` | Yes | Target workspace path | - |
+| `--node` | No | Node identifier | hostname |
+| `--language` | No | Language code | en |
+| `--company-name` | No | Company name | - |
+| `--family-name` | No | Family name | - |
+| `--telegram-token` | No | Telegram bot token | - |
+| `--api-key` | No | OpenAI API key | - |
+| `--base-url` | No | Base URL for API | - |
+| `--skip-openclaw` | No | Skip OpenClaw installation | false |
 
 ## Workspace Output Structure
 
@@ -111,11 +126,11 @@ After installation, the workspace will have:
 <workspace>/
 ├── .generated/
 │   └── .env           # Environment variables
-├── boss/              # Role directory
+├── <role-1>/         # Role directory
 │   ├── SOUL.md
 │   ├── IDENTITY.md
 │   └── TASKS.md
-├── secretary/         # Role directory
+├── <role-2>/         # Role directory
 │   ├── SOUL.md
 │   ├── IDENTITY.md
 │   └── TASKS.md
@@ -132,8 +147,6 @@ Templates support the following placeholders:
 - `{{LANGUAGE}}` - Language code
 
 ## Testing
-
-Run smoke tests:
 
 ```bash
 # Test workspace without role
