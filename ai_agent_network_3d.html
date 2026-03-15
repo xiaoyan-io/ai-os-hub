@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LHB OS — 事件路由流 · 三维智能体网络</title>
+<style>
+  :root {
+    --bg: #0b0e14; --bg2: #111520; --bg3: #161b27;
+    --card: #1a2035; --card2: #1f2640;
+    --border: #263050; --border2: #2e3a58;
+    --accent: #3b82f6; --accent2: #60a5fa;
+    --green: #22c55e; --yellow: #f59e0b; --red: #ef4444;
+    --purple: #a855f7; --cyan: #06b6d4;
+    --text: #e2e8f0; --text2: #94a3b8; --text3: #64748b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+
+  /* TOPBAR */
+  .topbar {
+    background: var(--bg2); border-bottom: 1px solid var(--border);
+    padding: 0 22px; height: 52px; display: flex; align-items: center;
+    justify-content: space-between; flex-shrink: 0; z-index: 10;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 14px; }
+  .logo { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: var(--accent2); }
+  .page-title { font-size: 14px; font-weight: 600; }
+  .page-sub { font-size: 10px; color: var(--text3); }
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge-green { background: rgba(34,197,94,.12); color: var(--green); border: 1px solid rgba(34,197,94,.2); }
+  .badge-blue  { background: rgba(59,130,246,.12); color: var(--accent2); border: 1px solid rgba(59,130,246,.2); }
+  .live-dot { display:inline-block; width:7px; height:7px; background:var(--green); border-radius:50%; animation: blink 1.8s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  /* CANVAS WRAPPER */
+  #canvas-wrap { flex: 1; position: relative; overflow: hidden; }
+  canvas#three { display: block; width: 100%; height: 100%; }
+
+  /* BOTTOM INFO BAR */
+  .infobar {
+    background: var(--bg2); border-top: 1px solid var(--border);
+    padding: 8px 20px; display: flex; align-items: center; gap: 16px;
+    flex-shrink: 0; overflow-x: auto;
+  }
+  .route-label { font-size: 10px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+  .route-path { display: flex; align-items: center; gap: 6px; }
+  .route-node {
+    display: flex; align-items: center; gap: 5px;
+    background: var(--card); border: 1px solid var(--border2);
+    border-radius: 6px; padding: 4px 10px; font-size: 11px; font-weight: 600; white-space: nowrap;
+  }
+  .route-arrow { color: var(--text3); font-size: 14px; }
+
+  /* LEGEND PANEL */
+  .legend {
+    position: absolute; top: 14px; right: 14px;
+    background: rgba(17,21,32,0.92); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px; min-width: 170px;
+    backdrop-filter: blur(6px);
+  }
+  .legend-title { font-size: 10px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; font-size: 11px; color: var(--text2); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* STATUS PANEL */
+  .status-panel {
+    position: absolute; top: 14px; left: 14px;
+    background: rgba(17,21,32,0.92); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px; min-width: 180px;
+    backdrop-filter: blur(6px);
+  }
+  .status-title { font-size: 10px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+  .status-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 11px; }
+  .s-name { color: var(--text2); }
+  .s-val  { color: var(--green); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  /* TOOLTIP */
+  #tooltip {
+    position: absolute; pointer-events: none;
+    background: rgba(17,21,32,0.96); border: 1px solid var(--border2);
+    border-radius: 8px; padding: 8px 12px; font-size: 11px;
+    display: none; z-index: 20; max-width: 180px;
+  }
+  #tooltip .tt-name { font-weight: 700; color: var(--accent2); margin-bottom: 3px; }
+  #tooltip .tt-dept { color: var(--text3); }
+  #tooltip .tt-status { color: var(--green); margin-top: 3px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="logo"><span class="live-dot"></span> LHB OS</span>
+    <div>
+      <div class="page-title">事件路由流 — 三维智能体网络</div>
+      <div class="page-sub">实时模拟多智能体协作路由</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;">
+    <span class="badge badge-green">● 10 智能体运行中</span>
+    <span class="badge badge-blue" id="event-count">事件: 0</span>
+  </div>
+</div>
+
+<div id="canvas-wrap">
+  <canvas id="three"></canvas>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-title">部门图例</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f59e0b;"></div>董事长 / boss</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#a855f7;"></div>管理 / mgmtbot</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3b82f6;"></div>商务 / bizbot</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#22c55e;"></div>财务 / finbot</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#06b6d4;"></div>仓库 / whbot</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f97316;"></div>采购 / procbot</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ef4444;"></div>人力 / hrbot</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#eab308;"></div>工程 / engbot</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6;"></div>客户 / csmbot</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#64748b;"></div>行政 / adminbot</div>
+  </div>
+
+  <!-- STATUS PANEL -->
+  <div class="status-panel">
+    <div class="status-title">实时状态</div>
+    <div class="status-item"><span class="s-name">活跃事件</span><span class="s-val" id="s-events">0</span></div>
+    <div class="status-item"><span class="s-name">跨部门路由</span><span class="s-val" id="s-routes">0</span></div>
+    <div class="status-item"><span class="s-name">已完成任务</span><span class="s-val" id="s-done">0</span></div>
+    <div class="status-item"><span class="s-name">当前帧率</span><span class="s-val" id="s-fps">60</span></div>
+  </div>
+
+  <!-- TOOLTIP -->
+  <div id="tooltip">
+    <div class="tt-name" id="tt-name"></div>
+    <div class="tt-dept" id="tt-dept"></div>
+    <div class="tt-status">● 运行中</div>
+  </div>
+</div>
+
+<!-- BOTTOM INFOBAR: Workflow Example -->
+<div class="infobar">
+  <span class="route-label">示例路由路径:</span>
+  <div class="route-path">
+    <div class="route-node"><span style="color:#eab308;">🔧</span> lhb-engbot <span style="color:#64748b;font-weight:400;">工程</span></div>
+    <span class="route-arrow">→</span>
+    <div class="route-node"><span style="color:#f97316;">🛒</span> lhb-procbot <span style="color:#64748b;font-weight:400;">采购</span></div>
+    <span class="route-arrow">→</span>
+    <div class="route-node"><span style="color:#06b6d4;">📦</span> lhb-whbot <span style="color:#64748b;font-weight:400;">仓库</span></div>
+    <span class="route-arrow">→</span>
+    <div class="route-node"><span style="color:#22c55e;">💰</span> lhb-finbot <span style="color:#64748b;font-weight:400;">财务</span></div>
+    <span class="route-arrow">→</span>
+    <div class="route-node"><span style="color:#f59e0b;">👑</span> boss <span style="color:#64748b;font-weight:400;">董事长</span></div>
+  </div>
+  <span style="margin-left:auto;font-size:10px;color:var(--text3);" id="clock-bar">--:--:--</span>
+</div>
+
+<script>
+// ─── THREE.JS MINI RENDERER (vanilla WebGL) ───────────────────────────────
+const canvas = document.getElementById('three');
+const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+
+// Fallback to Canvas 2D if WebGL fails (broad compatibility)
+const wrap = document.getElementById('canvas-wrap');
+let use2d = !gl;
+let ctx2d;
+if (use2d) {
+  canvas.remove();
+  const c2 = document.createElement('canvas');
+  c2.id = 'three';
+  c2.style.cssText = 'display:block;width:100%;height:100%;';
+  wrap.appendChild(c2);
+  ctx2d = c2.getContext('2d');
+}
+
+// ─── DATA ─────────────────────────────────────────────────────────────────
+const DEPTS = [
+  { id: 'boss',     name: '董事长',  bot: 'boss',          tg: '@yanmemos_bot',  color: '#f59e0b', hex: 0xf59e0b },
+  { id: 'mgmt',     name: '管理',    bot: 'lhb-mgmtbot',   tg: '@LHB_MGMT_bot',  color: '#a855f7', hex: 0xa855f7 },
+  { id: 'biz',      name: '商务',    bot: 'lhb-bizbot',    tg: '@LHB_BIZ_bot',   color: '#3b82f6', hex: 0x3b82f6 },
+  { id: 'fin',      name: '财务',    bot: 'lhb-finbot',    tg: '@LHB_FIN_bot',   color: '#22c55e', hex: 0x22c55e },
+  { id: 'wh',       name: '仓库',    bot: 'lhb-whbot',     tg: '@LHB_WH_bot',    color: '#06b6d4', hex: 0x06b6d4 },
+  { id: 'proc',     name: '采购',    bot: 'lhb-procbot',   tg: '@LHB_PROC_bot',  color: '#f97316', hex: 0xf97316 },
+  { id: 'hr',       name: '人力',    bot: 'lhb-hrbot',     tg: '@LHB_HR_bot',    color: '#ef4444', hex: 0xef4444 },
+  { id: 'eng',      name: '工程',    bot: 'lhb-engbot',    tg: '@LHB_ENG_bot',   color: '#eab308', hex: 0xeab308 },
+  { id: 'csm',      name: '客户',    bot: 'lhb-csmbot',    tg: '@rayoop_bot',    color: '#8b5cf6', hex: 0x8b5cf6 },
+  { id: 'admin',    name: '行政',    bot: 'lhb-adminbot',  tg: '@LHB_ADMIN_bot', color: '#64748b', hex: 0x64748b },
+];
+
+// ─── CANVAS 2D FULL RENDERER ──────────────────────────────────────────────
+if (use2d) {
+  run2D();
+} else {
+  runWebGL();
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// 2D CANVAS RENDERER (rich, animated, isometric-style 3D look)
+// ─────────────────────────────────────────────────────────────────────────
+function run2D() {
+  const c = document.getElementById('three');
+  const ctx = c.getContext('2d');
+  let W, H, CX, CY;
+
+  function resize() {
+    W = c.width = wrap.clientWidth;
+    H = c.height = wrap.clientHeight;
+    CX = W / 2; CY = H / 2;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Department node positions (arranged in circle tiers)
+  // boss at top-center, mgmt/biz/fin in mid-ring, rest in outer ring
+  function getNodePositions(w, h) {
+    const cx = w / 2, cy = h / 2;
+    const isoX = v => cx + v.x * 1.0;
+    const isoY = v => cy + v.y * 0.55 - v.z * 0.5;
+
+    const nodes = [];
+    // boss: center top
+    nodes.push({ dept: DEPTS[0], x3: 0, y3: -80, z3: 160 });
+    // inner ring: mgmt, biz, fin (3 nodes)
+    const innerR = 180;
+    for (let i = 0; i < 3; i++) {
+      const a = (i / 3) * Math.PI * 2 - Math.PI / 2;
+      nodes.push({ dept: DEPTS[i + 1], x3: Math.cos(a) * innerR, y3: Math.sin(a) * innerR * 0.5, z3: 60 });
+    }
+    // outer ring: wh, proc, hr, eng, csm, admin (6 nodes)
+    const outerR = 310;
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2 - Math.PI / 6;
+      nodes.push({ dept: DEPTS[i + 4], x3: Math.cos(a) * outerR, y3: Math.sin(a) * outerR * 0.5, z3: 0 });
+    }
+    // Project to 2D (simple isometric)
+    nodes.forEach(n => {
+      n.sx = cx + n.x3;
+      n.sy = cy + n.y3 - n.z3 * 0.5;
+    });
+    return nodes;
+  }
+
+  let nodes = getNodePositions(W, H);
+  window.addEventListener('resize', () => { nodes = getNodePositions(W, H); });
+
+  // Agents
+  const agents = DEPTS.map((dept, i) => {
+    const ni = i;
+    return {
+      dept,
+      nodeIdx: ni,
+      targetIdx: ni,
+      px: 0, py: 0,    // screen pos
+      tx: 0, ty: 0,    // target screen pos
+      progress: 1.0,
+      trail: [],
+      bobOffset: Math.random() * Math.PI * 2,
+      busy: false,
+      busyTimer: 0,
+      eventFlash: 0,
+    };
+  });
+
+  // Event particles: { x, y, tx, ty, progress, color, alpha }
+  const particles = [];
+
+  // Stats
+  let statEvents = 0, statRoutes = 0, statDone = 0;
+  let lastTime = performance.now();
+  let fps = 60;
+  let eventCount = 0;
+
+  // Random routing event
+  function spawnRoutingEvent() {
+    // Pick random source dept (not boss)
+    const srcIdx = 1 + Math.floor(Math.random() * 9);
+    const dstIdx = Math.floor(Math.random() * 10);
+    if (srcIdx === dstIdx) return;
+    const src = nodes[srcIdx];
+    const dst = nodes[dstIdx];
+    for (let i = 0; i < 3 + Math.floor(Math.random() * 4); i++) {
+      particles.push({
+        sx: src.sx, sy: src.sy,
+        tx: dst.sx, ty: dst.sy,
+        progress: -Math.random() * 0.3,
+        color: DEPTS[srcIdx].color,
+        alpha: 1,
+      });
+    }
+    // Move agent
+    agents[srcIdx].targetIdx = dstIdx;
+    agents[srcIdx].progress = 0;
+    agents[srcIdx].busy = true;
+    agents[srcIdx].busyTimer = 90 + Math.floor(Math.random() * 60);
+    agents[srcIdx].eventFlash = 1.0;
+    statEvents++;
+    statRoutes++;
+    eventCount++;
+    document.getElementById('s-events').textContent = statEvents;
+    document.getElementById('s-routes').textContent = statRoutes;
+    document.getElementById('event-count').textContent = '事件: ' + eventCount;
+  }
+
+  // Auto-fire events
+  let eventTimer = 0;
+
+  function hexToRgb(hex) {
+    const r = parseInt(hex.slice(1,3),16);
+    const g = parseInt(hex.slice(3,5),16);
+    const b = parseInt(hex.slice(5,7),16);
+    return [r,g,b];
+  }
+
+  function lerp(a,b,t){ return a + (b-a)*t; }
+  function easeInOut(t){ return t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2; }
+
+  function drawPillar(ctx, x, y, col, label, size, glow) {
+    const w = size * 1.1, h = size * 1.4;
+    const depth = size * 0.38;
+
+    // Glow
+    if (glow > 0) {
+      const [r,g,b] = hexToRgb(col);
+      const grd = ctx.createRadialGradient(x, y, 0, x, y, size * 2.5);
+      grd.addColorStop(0, `rgba(${r},${g},${b},${0.22 * glow})`);
+      grd.addColorStop(1, `rgba(${r},${g},${b},0)`);
+      ctx.fillStyle = grd;
+      ctx.beginPath(); ctx.arc(x, y, size * 2.5, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // Shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.25)';
+    ctx.beginPath();
+    ctx.ellipse(x, y + h/2 + depth*0.4, w*0.7, depth*0.3, 0, 0, Math.PI*2);
+    ctx.fill();
+
+    // Right face (darker)
+    const [r,g,b] = hexToRgb(col);
+    ctx.fillStyle = `rgb(${Math.floor(r*0.45)},${Math.floor(g*0.45)},${Math.floor(b*0.45)})`;
+    ctx.beginPath();
+    ctx.moveTo(x + w/2, y - h/2);
+    ctx.lineTo(x + w/2 + depth, y - h/2 - depth*0.5);
+    ctx.lineTo(x + w/2 + depth, y + h/2 - depth*0.5);
+    ctx.lineTo(x + w/2, y + h/2);
+    ctx.closePath(); ctx.fill();
+
+    // Top face
+    ctx.fillStyle = `rgb(${Math.min(255,Math.floor(r*1.4))},${Math.min(255,Math.floor(g*1.4))},${Math.min(255,Math.floor(b*1.4))})`;
+    ctx.beginPath();
+    ctx.moveTo(x - w/2, y - h/2);
+    ctx.lineTo(x + w/2, y - h/2);
+    ctx.lineTo(x + w/2 + depth, y - h/2 - depth*0.5);
+    ctx.lineTo(x - w/2 + depth, y - h/2 - depth*0.5);
+    ctx.closePath(); ctx.fill();
+
+    // Front face (gradient)
+    const gf = ctx.createLinearGradient(x - w/2, y - h/2, x + w/2, y + h/2);
+    gf.addColorStop(0, `rgb(${Math.min(255,Math.floor(r*1.2))},${Math.min(255,Math.floor(g*1.2))},${Math.min(255,Math.floor(b*1.2))})`);
+    gf.addColorStop(1, `rgb(${Math.floor(r*0.6)},${Math.floor(g*0.6)},${Math.floor(b*0.6)})`);
+    ctx.fillStyle = gf;
+    ctx.beginPath();
+    ctx.rect(x - w/2, y - h/2, w, h);
+    ctx.fill();
+
+    // Scanline effect
+    ctx.strokeStyle = `rgba(255,255,255,0.04)`;
+    ctx.lineWidth = 1;
+    for (let sy = y - h/2 + 3; sy < y + h/2; sy += 5) {
+      ctx.beginPath(); ctx.moveTo(x - w/2, sy); ctx.lineTo(x + w/2, sy); ctx.stroke();
+    }
+
+    // Border
+    ctx.strokeStyle = col;
+    ctx.lineWidth = 1.2;
+    ctx.globalAlpha = 0.5;
+    ctx.strokeRect(x - w/2, y - h/2, w, h);
+    ctx.globalAlpha = 1;
+
+    // Label
+    ctx.fillStyle = '#e2e8f0';
+    ctx.font = `bold ${Math.max(9,size*0.28)}px Segoe UI, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText(label, x, y + h/2 + 14);
+
+    // Pulsing top ring
+    const pulse = 0.6 + 0.4 * Math.sin(Date.now() * 0.003 + glow);
+    ctx.strokeStyle = col;
+    ctx.lineWidth = 1.5;
+    ctx.globalAlpha = pulse * 0.8;
+    ctx.beginPath();
+    ctx.ellipse(x + depth/2, y - h/2 - depth*0.25, w/2 + depth/2, depth*0.35, 0, 0, Math.PI*2);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+
+  function drawAgent(ctx, agent, t) {
+    const n = nodes[agent.nodeIdx];
+    const nt = nodes[agent.targetIdx];
+    const p = Math.min(1, Math.max(0, easeInOut(agent.progress)));
+
+    let ax, ay;
+    if (agent.progress >= 1) {
+      ax = nt.sx; ay = nt.sy;
+    } else {
+      // Arc path
+      const mx = (n.sx + nt.sx) / 2;
+      const my = (n.sy + nt.sy) / 2 - 40;
+      ax = lerp(lerp(n.sx, mx, p), lerp(mx, nt.sx, p), p);
+      ay = lerp(lerp(n.sy, my, p), lerp(my, nt.sy, p), p);
+    }
+
+    // Bob animation
+    const bob = Math.sin(t * 0.003 + agent.bobOffset) * 5;
+    ay += bob;
+
+    agent.px = ax; agent.py = ay;
+
+    const [r,g,b] = hexToRgb(agent.dept.color);
+    const flash = agent.eventFlash;
+
+    // Glow ring
+    const gr = ctx.createRadialGradient(ax, ay, 0, ax, ay, 20);
+    gr.addColorStop(0, `rgba(${r},${g},${b},${0.35 + flash*0.3})`);
+    gr.addColorStop(1, `rgba(${r},${g},${b},0)`);
+    ctx.fillStyle = gr;
+    ctx.beginPath(); ctx.arc(ax, ay, 20, 0, Math.PI*2); ctx.fill();
+
+    // Antenna
+    ctx.strokeStyle = agent.dept.color;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(ax, ay - 8);
+    ctx.lineTo(ax, ay - 20);
+    ctx.stroke();
+    // Antenna tip blink
+    ctx.fillStyle = flash > 0.5 ? '#fff' : agent.dept.color;
+    ctx.beginPath(); ctx.arc(ax, ay - 21, 2.5, 0, Math.PI*2); ctx.fill();
+
+    // Body sphere
+    const sg = ctx.createRadialGradient(ax-3, ay-3, 1, ax, ay, 10);
+    sg.addColorStop(0, `rgba(${Math.min(255,r+80)},${Math.min(255,g+80)},${Math.min(255,b+80)},1)`);
+    sg.addColorStop(1, `rgba(${r},${g},${b},1)`);
+    ctx.fillStyle = sg;
+    ctx.beginPath(); ctx.arc(ax, ay, 10, 0, Math.PI*2); ctx.fill();
+
+    // Outline
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 0.8;
+    ctx.globalAlpha = 0.4;
+    ctx.beginPath(); ctx.arc(ax, ay, 10, 0, Math.PI*2); ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    // Label above
+    ctx.fillStyle = '#e2e8f0';
+    ctx.font = '9px Segoe UI, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(agent.dept.bot.replace('lhb-',''), ax, ay - 26);
+  }
+
+  function drawConnection(ctx, n1, n2, alpha) {
+    const [r,g,b] = hexToRgb(n1.dept.color);
+    ctx.strokeStyle = `rgba(${r},${g},${b},${alpha})`;
+    ctx.lineWidth = 0.6;
+    ctx.setLineDash([4, 8]);
+    ctx.beginPath();
+    ctx.moveTo(n1.sx, n1.sy);
+    ctx.lineTo(n2.sx, n2.sy);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  function drawParticle(ctx, p) {
+    if (p.progress < 0 || p.progress > 1) return;
+    const x = lerp(p.sx, p.tx, p.progress);
+    const y = lerp(p.sy, p.ty, p.progress) - Math.sin(p.progress * Math.PI) * 30;
+    const [r,g,b] = hexToRgb(p.color);
+    ctx.fillStyle = `rgba(${r},${g},${b},${p.alpha * (1 - p.progress * 0.5)})`;
+    ctx.beginPath();
+    ctx.arc(x, y, 3, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  // Grid floor
+  function drawGrid(ctx, w, h) {
+    ctx.strokeStyle = 'rgba(38,48,80,0.4)';
+    ctx.lineWidth = 0.5;
+    const gridSize = 48;
+    for (let x = 0; x < w; x += gridSize) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+    }
+    for (let y = 0; y < h; y += gridSize) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+    }
+  }
+
+  let frameCount = 0, fpsTimer = 0, fpsDisplay = 60;
+  let doneCooldown = 0;
+
+  function frame(t) {
+    requestAnimationFrame(frame);
+
+    const dt = Math.min(30, t - lastTime);
+    lastTime = t;
+    frameCount++;
+    fpsTimer += dt;
+    if (fpsTimer > 500) { fpsDisplay = Math.round(frameCount / (fpsTimer/1000)); frameCount = 0; fpsTimer = 0; document.getElementById('s-fps').textContent = fpsDisplay; }
+
+    // Spawn events
+    eventTimer++;
+    if (eventTimer > 90 + Math.random() * 60) { eventTimer = 0; spawnRoutingEvent(); }
+
+    // Update agents
+    agents.forEach(a => {
+      if (a.progress < 1) {
+        a.progress += dt * 0.0012;
+        if (a.progress >= 1) {
+          a.progress = 1;
+          a.nodeIdx = a.targetIdx;
+          a.busy = false;
+          doneCooldown++;
+          if (doneCooldown > 2) { doneCooldown = 0; statDone++; document.getElementById('s-done').textContent = statDone; }
+        }
+      }
+      if (a.eventFlash > 0) a.eventFlash -= dt * 0.003;
+    });
+
+    // Update particles
+    for (let i = particles.length - 1; i >= 0; i--) {
+      particles[i].progress += dt * 0.0015;
+      if (particles[i].progress > 1.2) particles.splice(i, 1);
+    }
+
+    // DRAW
+    const w = c.width = wrap.clientWidth;
+    const h = c.height = wrap.clientHeight;
+    nodes = getNodePositions(w, h);
+
+    ctx.fillStyle = '#0b0e14';
+    ctx.fillRect(0, 0, w, h);
+
+    drawGrid(ctx, w, h);
+
+    // Radial center glow
+    const rg = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, Math.min(w,h)*0.55);
+    rg.addColorStop(0, 'rgba(59,130,246,0.04)');
+    rg.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = rg;
+    ctx.fillRect(0, 0, w, h);
+
+    // Connections (boss to inner)
+    for (let i = 1; i <= 3; i++) drawConnection(ctx, nodes[0], nodes[i], 0.25);
+    // Inner to outer
+    for (let i = 1; i <= 3; i++) for (let j = 4; j <= 9; j++) drawConnection(ctx, nodes[i], nodes[j], 0.08);
+
+    // Particles
+    particles.forEach(p => drawParticle(ctx, p));
+
+    // Sort nodes by sy for depth
+    const sorted = [...nodes].sort((a,b) => a.sy - b.sy);
+    sorted.forEach(n => {
+      const size = n === nodes[0] ? 26 : (nodes.indexOf(n) <= 3 ? 19 : 14);
+      const glow = agents[nodes.indexOf(n)]?.eventFlash || 0;
+      drawPillar(ctx, n.sx, n.sy, n.dept.color, n.dept.name, size, glow);
+    });
+
+    // Agents
+    agents.forEach(a => drawAgent(ctx, a, t));
+  }
+
+  requestAnimationFrame(frame);
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// WEBGL RENDERER (fallback, same as 2D but using webgl for perf)
+// Falls through to 2D since we already handle it above
+// ─────────────────────────────────────────────────────────────────────────
+function runWebGL() {
+  // Use 2D canvas on top of webgl canvas for richer visuals
+  canvas.style.display = 'none';
+  const c2 = document.createElement('canvas');
+  c2.id = 'three2d';
+  c2.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
+  wrap.appendChild(c2);
+  ctx2d = c2.getContext('2d');
+  // Replace canvas ref
+  Object.defineProperty(window, '_c2', { value: c2 });
+  // Rerun 2D with new canvas
+  use2d = true;
+  const origC = document.getElementById('three');
+  run2DOn(c2);
+}
+
+function run2DOn(c) {
+  const ctx = c.getContext('2d');
+  let W, H;
+
+  function resize() {
+    W = c.width = wrap.clientWidth;
+    H = c.height = wrap.clientHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function getNodePositions(w, h) {
+    const cx = w/2, cy = h/2;
+    const nodes = [];
+    nodes.push({ dept: DEPTS[0], x3: 0, y3: -80, z3: 160 });
+    const innerR = Math.min(w,h) * 0.22;
+    for (let i = 0; i < 3; i++) {
+      const a = (i/3)*Math.PI*2 - Math.PI/2;
+      nodes.push({ dept: DEPTS[i+1], x3: Math.cos(a)*innerR, y3: Math.sin(a)*innerR*0.5, z3: 60 });
+    }
+    const outerR = Math.min(w,h) * 0.38;
+    for (let i = 0; i < 6; i++) {
+      const a = (i/6)*Math.PI*2 - Math.PI/6;
+      nodes.push({ dept: DEPTS[i+4], x3: Math.cos(a)*outerR, y3: Math.sin(a)*outerR*0.5, z3: 0 });
+    }
+    nodes.forEach(n => { n.sx = cx + n.x3; n.sy = cy + n.y3 - n.z3*0.5; });
+    return nodes;
+  }
+
+  let nodes = getNodePositions(W, H);
+  window.addEventListener('resize', () => { nodes = getNodePositions(W, H); });
+
+  const agents = DEPTS.map((dept, i) => ({
+    dept, nodeIdx: i, targetIdx: i,
+    progress: 1, bobOffset: Math.random()*Math.PI*2,
+    busy: false, eventFlash: 0,
+  }));
+  const particles = [];
+  let statEvents=0, statRoutes=0, statDone=0, eventTimer=0, eventCount=0;
+  let lastTime2 = performance.now(), frameCount=0, fpsTimer=0, fpsDisplay=60;
+
+  function hexToRgb(hex){ return [parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)]; }
+  function lerp(a,b,t){ return a+(b-a)*t; }
+  function ease(t){ return t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2; }
+
+  function spawnEvent() {
+    const s = 1+Math.floor(Math.random()*9);
+    const d = Math.floor(Math.random()*10);
+    if(s===d) return;
+    const ns = nodes[s], nd = nodes[d];
+    for(let i=0;i<4+Math.floor(Math.random()*3);i++)
+      particles.push({ sx:ns.sx, sy:ns.sy, tx:nd.sx, ty:nd.sy, progress:-Math.random()*0.25, color:DEPTS[s].color, alpha:1 });
+    agents[s].targetIdx = d; agents[s].progress = 0; agents[s].busy = true; agents[s].eventFlash = 1;
+    statEvents++; statRoutes++; eventCount++;
+    document.getElementById('s-events').textContent=statEvents;
+    document.getElementById('s-routes').textContent=statRoutes;
+    document.getElementById('event-count').textContent='事件: '+eventCount;
+  }
+
+  function drawPillar2(ctx, x, y, col, label, size, glow) {
+    const w=size*1.1, h=size*1.4, depth=size*0.38;
+    const [r,g,b]=hexToRgb(col);
+    if(glow>0){
+      const gr=ctx.createRadialGradient(x,y,0,x,y,size*2.5);
+      gr.addColorStop(0,`rgba(${r},${g},${b},${0.2*glow})`);
+      gr.addColorStop(1,`rgba(${r},${g},${b},0)`);
+      ctx.fillStyle=gr; ctx.beginPath(); ctx.arc(x,y,size*2.5,0,Math.PI*2); ctx.fill();
+    }
+    ctx.fillStyle=`rgba(0,0,0,0.2)`;
+    ctx.beginPath(); ctx.ellipse(x,y+h/2+depth*0.3,w*0.65,depth*0.28,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=`rgb(${Math.floor(r*.45)},${Math.floor(g*.45)},${Math.floor(b*.45)})`;
+    ctx.beginPath(); ctx.moveTo(x+w/2,y-h/2); ctx.lineTo(x+w/2+depth,y-h/2-depth*.5); ctx.lineTo(x+w/2+depth,y+h/2-depth*.5); ctx.lineTo(x+w/2,y+h/2); ctx.closePath(); ctx.fill();
+    ctx.fillStyle=`rgb(${Math.min(255,Math.floor(r*1.4))},${Math.min(255,Math.floor(g*1.4))},${Math.min(255,Math.floor(b*1.4))})`;
+    ctx.beginPath(); ctx.moveTo(x-w/2,y-h/2); ctx.lineTo(x+w/2,y-h/2); ctx.lineTo(x+w/2+depth,y-h/2-depth*.5); ctx.lineTo(x-w/2+depth,y-h/2-depth*.5); ctx.closePath(); ctx.fill();
+    const gf=ctx.createLinearGradient(x-w/2,y-h/2,x+w/2,y+h/2);
+    gf.addColorStop(0,`rgb(${Math.min(255,Math.floor(r*1.15))},${Math.min(255,Math.floor(g*1.15))},${Math.min(255,Math.floor(b*1.15))})`);
+    gf.addColorStop(1,`rgb(${Math.floor(r*.55)},${Math.floor(g*.55)},${Math.floor(b*.55)})`);
+    ctx.fillStyle=gf; ctx.beginPath(); ctx.rect(x-w/2,y-h/2,w,h); ctx.fill();
+    for(let sy2=y-h/2+4;sy2<y+h/2;sy2+=5){ ctx.strokeStyle='rgba(255,255,255,0.03)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x-w/2,sy2); ctx.lineTo(x+w/2,sy2); ctx.stroke(); }
+    ctx.strokeStyle=col; ctx.lineWidth=1; ctx.globalAlpha=0.45;
+    ctx.strokeRect(x-w/2,y-h/2,w,h); ctx.globalAlpha=1;
+    ctx.fillStyle='#e2e8f0'; ctx.font=`bold ${Math.max(9,size*.27)}px Segoe UI,sans-serif`;
+    ctx.textAlign='center'; ctx.fillText(label,x,y+h/2+13);
+    const pulse=0.55+0.45*Math.sin(Date.now()*.003);
+    ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.globalAlpha=pulse*.75;
+    ctx.beginPath(); ctx.ellipse(x+depth/2,y-h/2-depth*.25,w/2+depth/2,depth*.35,0,0,Math.PI*2); ctx.stroke();
+    ctx.globalAlpha=1;
+  }
+
+  function drawAgent2(ctx, agent, t) {
+    const n=nodes[agent.nodeIdx], nt=nodes[agent.targetIdx];
+    const p=Math.min(1,Math.max(0,ease(agent.progress)));
+    let ax,ay;
+    if(agent.progress>=1){ ax=nt.sx; ay=nt.sy; }
+    else {
+      const mx=(n.sx+nt.sx)/2, my=(n.sy+nt.sy)/2-38;
+      ax=lerp(lerp(n.sx,mx,p),lerp(mx,nt.sx,p),p);
+      ay=lerp(lerp(n.sy,my,p),lerp(my,nt.sy,p),p);
+    }
+    ay += Math.sin(t*.003+agent.bobOffset)*5;
+    const [r,g,b]=hexToRgb(agent.dept.color);
+    const fl=Math.max(0,agent.eventFlash);
+    const gr=ctx.createRadialGradient(ax,ay,0,ax,ay,18);
+    gr.addColorStop(0,`rgba(${r},${g},${b},${.3+fl*.25})`);
+    gr.addColorStop(1,`rgba(${r},${g},${b},0)`);
+    ctx.fillStyle=gr; ctx.beginPath(); ctx.arc(ax,ay,18,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle=agent.dept.color; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(ax,ay-8); ctx.lineTo(ax,ay-20); ctx.stroke();
+    ctx.fillStyle=fl>0.5?'#fff':agent.dept.color;
+    ctx.beginPath(); ctx.arc(ax,ay-21,2.5,0,Math.PI*2); ctx.fill();
+    const sg=ctx.createRadialGradient(ax-3,ay-3,1,ax,ay,10);
+    sg.addColorStop(0,`rgba(${Math.min(255,r+80)},${Math.min(255,g+80)},${Math.min(255,b+80)},1)`);
+    sg.addColorStop(1,`rgba(${r},${g},${b},1)`);
+    ctx.fillStyle=sg; ctx.beginPath(); ctx.arc(ax,ay,10,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.lineWidth=0.8;
+    ctx.beginPath(); ctx.arc(ax,ay,10,0,Math.PI*2); ctx.stroke();
+    ctx.fillStyle='#e2e8f0'; ctx.font='9px Segoe UI,sans-serif'; ctx.textAlign='center';
+    ctx.fillText(agent.dept.bot.replace('lhb-',''),ax,ay-26);
+  }
+
+  function drawParticle2(ctx,p) {
+    if(p.progress<0||p.progress>1) return;
+    const x=lerp(p.sx,p.tx,p.progress), y=lerp(p.sy,p.ty,p.progress)-Math.sin(p.progress*Math.PI)*28;
+    const [r,g,b]=hexToRgb(p.color);
+    ctx.fillStyle=`rgba(${r},${g},${b},${p.alpha*(1-p.progress*.5)})`;
+    ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
+  }
+
+  let doneCool=0;
+  function frame2(t) {
+    requestAnimationFrame(frame2);
+    const dt=Math.min(30,t-lastTime2); lastTime2=t;
+    frameCount++; fpsTimer+=dt;
+    if(fpsTimer>500){ fpsDisplay=Math.round(frameCount/(fpsTimer/1000)); frameCount=0; fpsTimer=0; document.getElementById('s-fps').textContent=fpsDisplay; }
+    eventTimer++;
+    if(eventTimer>80+Math.random()*70){ eventTimer=0; spawnEvent(); }
+    agents.forEach(a => {
+      if(a.progress<1){ a.progress+=dt*.0013; if(a.progress>=1){ a.progress=1; a.nodeIdx=a.targetIdx; doneCool++; if(doneCool>1){ doneCool=0; statDone++; document.getElementById('s-done').textContent=statDone; } } }
+      if(a.eventFlash>0) a.eventFlash-=dt*.003;
+    });
+    for(let i=particles.length-1;i>=0;i--){ particles[i]
