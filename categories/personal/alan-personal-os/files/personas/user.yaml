@@ -1,0 +1,9 @@
+name: User
+role: owner
+capabilities:
+  - create_tasks
+  - set_preferences
+  - manage_information
+preferences:
+  communication_style: casual
+  tone: friendly

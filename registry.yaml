@@ -38,6 +38,26 @@ templates:
     name: Family Care OS
     description: Family health and care management system
     version: "1.0.0"
+  - id: alan-personal-os
+    category: personal
+    name: Alan Personal OS
+    description: Personal-use AI assistant for Alan's daily tasks and planning
+    version: "1.0.0"
+  - id: alan-family-care-os
+    category: personal
+    name: Alan Family Care OS
+    description: Personal-use family care helper for household reminders and care coordination
+    version: "1.0.0"
+  - id: alan-boss-os
+    category: company
+    name: Alan Boss OS
+    description: Personal-use executive assistant template for internal summaries and directives
+    version: "1.0.0"
+  - id: alan-sales-os
+    category: sales
+    name: Alan Sales OS
+    description: Personal-use sales follow-up template for lead intake and chat closing
+    version: "1.0.0"
 
 placeholders:
   - key: COMPANY_NAME

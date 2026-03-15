@@ -1,0 +1,17 @@
+id: alan-family-care-os
+category: personal
+name: Alan Family Care OS
+version: "1.0.0"
+description: Personal-use family care helper for household reminders, symptom organization and care coordination
+language: {{LANGUAGE}}
+node: {{NODE_NAME}}
+
+personas:
+  - caregiver
+  - family_member
+
+config:
+  workspace_type: family_care
+  communication_style: supportive
+  default_language: {{LANGUAGE}}
+  personal_use: true

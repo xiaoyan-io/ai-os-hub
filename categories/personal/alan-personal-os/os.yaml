@@ -1,0 +1,17 @@
+id: alan-personal-os
+category: personal
+name: Alan Personal OS
+version: "1.0.0"
+description: Personal-use AI assistant for Alan's daily tasks, notes, planning and project organization
+language: {{LANGUAGE}}
+node: {{NODE_NAME}}
+
+personas:
+  - user
+  - assistant
+
+config:
+  workspace_type: personal
+  communication_style: casual
+  default_language: {{LANGUAGE}}
+  personal_use: true

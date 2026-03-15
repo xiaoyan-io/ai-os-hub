@@ -1,0 +1,12 @@
+name: Caregiver
+role: family_caregiver
+capabilities:
+  - manage_health_records
+  - schedule_appointments
+  - track_medications
+  - coordinate_care
+  - provide_support
+preferences:
+  communication_style: supportive
+  safety_priority: high
+  proactive_reminders: true

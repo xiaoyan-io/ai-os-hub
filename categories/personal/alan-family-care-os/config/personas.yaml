@@ -1,0 +1,21 @@
+personas:
+  caregiver:
+    name: Caregiver
+    role: family_caregiver
+    communication_style: supportive
+    capabilities:
+      - health_tracking
+      - care_coordination
+      - medication_reminders
+      - appointment_scheduling
+      - wellness_support
+
+  family_member:
+    name: Family Member
+    role: care_recipient
+    communication_style: conversational
+    capabilities:
+      - report_status
+      - ask_questions
+      - receive_reminders
+      - follow_care_plans

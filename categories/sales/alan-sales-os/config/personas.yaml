@@ -1,0 +1,19 @@
+personas:
+  sales_agent:
+    name: Sales Agent
+    role: sales_representative
+    communication_style: friendly
+    capabilities:
+      - lead_engagement
+      - product_recommendation
+      - objection_handling
+      - sales_closing
+
+  customer:
+    name: Customer
+    role: buyer
+    communication_style: conversational
+    capabilities:
+      - ask_questions
+      - evaluate_options
+      - make_decisions

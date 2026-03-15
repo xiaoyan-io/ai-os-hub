@@ -1,0 +1,11 @@
+name: Family Member
+role: care_recipient
+capabilities:
+  - report_health_status
+  - ask_questions
+  - receive_care
+  - follow_plans
+preferences:
+  communication_style: gentle
+  tone: supportive
+  privacy_respect: high

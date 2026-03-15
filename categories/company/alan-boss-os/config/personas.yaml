@@ -1,0 +1,19 @@
+personas:
+  boss:
+    name: Executive Boss
+    role: decision_maker
+    communication_style: formal
+    permissions:
+      - approve_schedule
+      - make_decisions
+      - delegate_tasks
+
+  secretary:
+    name: Executive Secretary
+    role: assistant
+    communication_style: formal_professional
+    permissions:
+      - manage_calendar
+      - draft_communications
+      - screen_messages
+      - prepare_documents

@@ -1,0 +1,17 @@
+id: alan-sales-os
+category: sales
+name: Alan Sales OS
+version: "1.0.0"
+description: Personal-use sales follow-up template for lead intake, reply drafting and client closing
+language: {{LANGUAGE}}
+node: {{NODE_NAME}}
+
+personas:
+  - sales_agent
+  - customer
+
+config:
+  workspace_type: sales
+  communication_style: friendly
+  default_language: {{LANGUAGE}}
+  personal_use: true

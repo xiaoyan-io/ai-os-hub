@@ -1,0 +1,17 @@
+id: alan-boss-os
+category: company
+name: Alan Boss OS
+version: "1.0.0"
+description: Personal-use executive assistant template for internal summary, directives and priority tracking
+language: {{LANGUAGE}}
+node: {{NODE_NAME}}
+
+personas:
+  - boss
+  - secretary
+
+config:
+  workspace_type: corporate
+  communication_style: formal
+  default_language: {{LANGUAGE}}
+  personal_use: true
