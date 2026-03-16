@@ -185,11 +185,6 @@ Templates support the following placeholders:
 - `{{NODE_NAME}}` - Node identifier
 - `{{LANGUAGE}}` - Language code
 
-## Developer
-
-- **OpenClaw Team**: Core developers and maintainers.
-- **AI OS Hub Contributors**: Community members who have provided templates and improvements.
-
 ## Requirements
 
 - bash 4.0+

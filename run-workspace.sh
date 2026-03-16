@@ -133,6 +133,38 @@ else
     fi
 fi
 
+# Update status file for dashboard
+update_status() {
+    local ws_path="$1"
+    local port="$2"
+    local pid="$3"
+    local status_file="/root/ai-os-hub/status.json"
+    
+    # Simple JSON append/update using temporary file
+    local timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    local ws_name=$(basename "$ws_path")
+    
+    # If file doesn't exist, create it
+    if [[ ! -f "$status_file" ]]; then
+        echo "{\"instances\": {}}" > "$status_file"
+    fi
+    
+    # Use python for safer JSON manipulation if available, otherwise just use a simple placeholder
+    # For now, let's use a robust temporary file method
+    cat "$status_file" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+data['instances']['$ws_name'] = {
+    'path': '$ws_path',
+    'port': $port,
+    'pid': $pid,
+    'startTime': '$timestamp',
+    'status': 'running'
+}
+json.dump(data, sys.stdout, indent=2)
+" > "${status_file}.tmp" && mv "${status_file}.tmp" "$status_file"
+}
+
 echo "Launching workspace: $TARGET_WS on port $PORT"
 
 if [[ "$DAEMON" == "true" ]]; then
@@ -141,7 +173,10 @@ if [[ "$DAEMON" == "true" ]]; then
     nohup /root/ai-os-hub/installers/start-os.sh "$TARGET_WS" "$PORT" > "$LOG_FILE" 2>&1 &
     PID=$!
     echo "Started PID: $PID"
+    update_status "$TARGET_WS" "$PORT" "$PID"
     echo "Access gateway at: http://localhost:$PORT"
 else
+    # Update status for foreground too (though PID will change if exec is used)
+    update_status "$TARGET_WS" "$PORT" "$$"
     exec /root/ai-os-hub/installers/start-os.sh "$TARGET_WS" "$PORT"
 fi

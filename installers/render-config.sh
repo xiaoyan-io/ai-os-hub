@@ -42,14 +42,14 @@ generate_env_file() {
     mkdir -p "$generated_dir"
     
     cat > "$generated_dir/.env" << EOF
-NODE_NAME=$node_name
-TELEGRAM_TOKEN=$telegram_token
-OPENAI_API_KEY=$api_key
-OPENAI_BASE_URL=$base_url
-COMPANY_NAME=$company_name
-FAMILY_NAME=$family_name
-LANGUAGE=$language
-CATEGORY=$category
-OS_ID=$os_id
+NODE_NAME="$node_name"
+TELEGRAM_TOKEN="$telegram_token"
+OPENAI_API_KEY="$api_key"
+OPENAI_BASE_URL="$base_url"
+COMPANY_NAME="$company_name"
+FAMILY_NAME="$family_name"
+LANGUAGE="$language"
+CATEGORY="$category"
+OS_ID="$os_id"
 EOF
 }

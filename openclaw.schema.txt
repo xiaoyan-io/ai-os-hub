@@ -1,0 +1,135 @@
+File name:
+openclaw.json
+
+Purpose:
+This is the main OpenClaw runtime configuration file.
+
+Important note:
+This template follows a real-world OpenClaw layout with:
+- secrets
+- auth
+- models.providers
+- agents.defaults
+- session
+- hooks
+- channels
+- gateway
+- plugins
+
+Editing rules:
+- Keep valid JSON syntax.
+- Do not remove unknown fields unless necessary.
+- Preserve working values unless the user explicitly wants them changed.
+- After editing, always output the full final JSON.
+- Do not hardcode machine-specific paths unless confirmed.
+- Mask or rotate secrets if they were exposed in chat.
+
+Top-level structure:
+
+1. meta
+Stores config metadata such as version and last edit time.
+
+2. wizard
+Stores the last wizard/doctor/configure run details.
+
+3. secrets
+Stores references to sensitive provider secrets.
+Usually points to files rather than embedding secret content.
+
+4. auth
+Stores auth profiles such as OAuth-based profiles.
+
+5. models
+Defines model providers, API endpoint, API key, and model list.
+
+models.providers.<provider>
+Common fields:
+- baseUrl
+- apiKey
+- api
+- models[]
+
+models[].id
+Must match the model id later referenced by agents.defaults.model.primary.
+
+6. agents
+Defines default agent behavior.
+
+agents.defaults
+Common fields:
+- model.primary
+- models
+- workspace
+- compaction.mode
+- maxConcurrent
+- subagents.maxConcurrent
+
+7. messages
+Controls message acknowledgment behavior.
+
+8. commands
+Controls native command behavior.
+
+9. session
+Controls direct-message session isolation.
+Recommended:
+- dmScope: per-channel-peer
+
+10. hooks
+Defines internal hooks and installed hook sources.
+
+11. channels
+Defines enabled communication channels.
+
+channels.telegram
+Common fields:
+- enabled
+- dmPolicy
+- botToken
+- groups
+- allowFrom
+- groupAllowFrom
+- groupPolicy
+- streaming
+
+Security recommendation:
+Prefer allowlist over open unless explicitly intended.
+
+12. gateway
+Defines local runtime gateway settings.
+
+Common fields:
+- port
+- mode
+- bind
+- auth.mode
+- auth.token
+- tailscale.mode
+- tailscale.resetOnExit
+
+13. plugins
+Defines enabled plugins.
+
+AI review checklist:
+When reviewing or editing this file, check for:
+
+1. Invalid JSON syntax
+2. Exposed secrets or tokens
+3. Missing or unsafe Telegram restrictions
+4. groupPolicy too open
+5. dmPolicy too open
+6. Missing session.dmScope
+7. agents.defaults.model.primary not matching models.providers entries
+8. Missing workspace path
+9. Invalid or stale hook paths
+10. Missing gateway auth token
+11. Plugins enabled but channels misconfigured
+12. Multiple machine-specific paths copied from another host
+
+Safe workflow:
+1. Read the current file first
+2. Explain relevant fields
+3. Identify risks or gaps
+4. List exact fields to change
+5. Output the full final JSON
+6. Suggest verification commands
