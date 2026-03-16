@@ -1,24 +1,39 @@
-# Tasks - Boss
+# Tasks - Boss / 任务 - 老板 / တာဝန်များ - ဆုံးဖြတ်ချက်ချသူ
 
-## Decision Making
-- Review and approve meeting requests
-- Provide direction on priorities
-- Sign off on important communications
-- Set daily priorities
+## Decision Making / 决策 / ဆုံးဖြတ်ချက်ချမှတ်ခြင်း
 
-## Delegation
-- Assign tasks to secretary
-- Provide context for tasks
-- Review completed work
-- Give feedback
+- **EN**: Review and approve meeting requests | **中文**: 审核并批准会议申请 | **မြန်မာ**: အစည်းအဝေးတောင်းဆိုမှုများစစ်ဆေးအတည်ပြုသည်
+- **EN**: Provide direction on priorities | **中文**: 指示优先事项方向 | **မြန်မာ**: ဦးစားပေးမှုများအတွက်လမ်းညွှန်သည်
+- **EN**: Sign off on important communications | **中文**: 审批重要对外沟通 | **မြန်မာ**: အရေးကြီးသောဆက်သွယ်ရေးကိုအတည်ပြုသည်
+- **EN**: Set daily priorities | **中文**: 设定每日优先事项 | **မြန်မာ**: နေ့စဉ်ဦးစားပေးမှုများချမှတ်သည်
 
-## Communication
-- Brief secretary on requirements
-- Provide updates on status
-- Share strategic insights
+## Delegation / 任务委派 / တာဝန်လွှဲအပ်ခြင်း
 
-## Document Review
-- Review and approve outgoing documents
-- Provide edits and directional feedback
-- Sign off on final versions
-- Archive important decisions and correspondence
+- **EN**: Assign tasks to secretary | **中文**: 向秘书分配任务 | **မြန်မာ**: အတွင်းရေးမှူးသို့တာဝန်ပေးသည်
+- **EN**: Provide context for tasks | **中文**: 为任务提供背景说明 | **မြန်မာ**: တာဝန်များအတွက်နောက်ခံရှင်းပြသည်
+- **EN**: Review completed work | **中文**: 审阅已完成的工作 | **မြန်မာ**: ပြီးစီးသောအလုပ်ကိုစစ်ဆေးသည်
+- **EN**: Give feedback | **中文**: 提供反馈 | **မြန်မာ**: တုံ့ပြန်ချက်ပေးသည်
+
+## Communication / 沟通 / ဆက်သွယ်ရေး
+
+- **EN**: Brief secretary on requirements | **中文**: 向秘书说明需求要点 | **မြန်မာ**: လိုအပ်ချက်များနှင့်ပတ်သက်၍အတွင်းရေးမှူးကိုရှင်းပြသည်
+- **EN**: Provide updates on status | **中文**: 提供状态更新 | **မြန်မာ**: အခြေအနေအပ်ဒိတ်များပေးသည်
+- **EN**: Share strategic insights | **中文**: 分享战略洞察 | **မြန်မာ**: မဟာဗျူဟာထိုးထွင်းသိမြင်မှုများမျှဝေသည်
+
+## Document Review / 文件审阅 / စာရွက်စာတမ်းစစ်ဆေးခြင်း
+
+- **EN**: Review and approve outgoing documents | **中文**: 审核并批准对外文件 | **မြန်မာ**: ပြင်ပပေးပို့သောစာရွက်စာတမ်းများစစ်ဆေးအတည်ပြုသည်
+- **EN**: Provide edits and directional feedback | **中文**: 提供编辑意见及方向性反馈 | **မြန်မာ**: တည်းဖြတ်မှုနှင့်လမ်းညွှန်တုံ့ပြန်ချက်ပေးသည်
+- **EN**: Sign off on final versions | **中文**: 审批最终版本 | **မြန်မာ**: နောက်ဆုံးဗားရှင်းကိုအတည်ပြုသည်
+- **EN**: Archive important decisions and correspondence | **中文**: 存档重要决策与往来文件 | **မြန်မာ**: အရေးကြီးသောဆုံးဖြတ်ချက်များနှင့်စာပေါင်းသင်းဆက်ဆံမှုများသိုလှောင်သည်
+
+## Industry Terms / 行业专业词 / လုပ်ငန်းဝေါဟာရများ
+
+| English | 中文 | မြန်မာ |
+|---|---|---|
+| Sign-off | 最终批准 | နောက်ဆုံးအတည်ပြုချက် |
+| Briefing | 情况说明会 | အချက်အလက်ရှင်းလင်းပွဲ |
+| Delegation | 任务委派 | တာဝန်လွှဲအပ်မှု |
+| Correspondence | 往来函件 | ပေးစာသုံးဆောင် |
+| Strategic Insight | 战略洞察 | မဟာဗျူဟာထိုးထွင်းသိမြင်မှု |
+| Priority Matrix | 优先矩阵 | ဦးစားပေးမှုမက်ထရစ်ကြမ်း |

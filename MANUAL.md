@@ -41,11 +41,13 @@
 ### 手动安装
 
 #### 交互式安装
+
 ```bash
 ./install.sh
 ```
 
 #### 命令行安装
+
 ```bash
 ./install.sh --direct \
   --category sales \
@@ -71,7 +73,7 @@
 | `--company-name` | 否 | 公司名称 | - |
 | `--family-name` | 否 | 家庭名称 | - |
 | `--telegram-token` | 否 | Telegram 机器人令牌 | - |
-| `--base-url` | 否 | API 基础 URL | https://api.openai.com/v1 |
+| `--base-url` | 否 | API 基础 URL | <https://api.openai.com/v1> |
 | `--port` | 否 | 网关端口 (自动分配) | - |
 | `--daemon` | 否 | 后台运行 | false |
 
@@ -88,17 +90,21 @@
 ## 支持的 OS 模板
 
 ### 公司类
+
 - `boss-secretary-os` - 上司-秘书工作流
 - `alan-boss-os` - 个人行政助理
 
 ### 销售类
+
 - `chat-sales-os` - AI 销售对话系统
 - `alan-sales-os` - 个人销售跟进
 
 ### 建筑类
+
 - `site-report-os` - 施工现场报告系统
 
 ### 个人类
+
 - `personal-os` - 个人 AI 助理
 - `alan-personal-os` - 个人助手
 - `family-care-os` - 家庭健康护理
@@ -107,11 +113,13 @@
 ## 验证与测试
 
 ### 完整流程测试
+
 ```bash
 ./test-e2e.sh
 ```
 
 ### 工作空间验证
+
 ```bash
 ./smoke-tests/base.sh --workspace /path/to/workspace --role care
 ```
@@ -125,6 +133,7 @@
 ## 配置参考
 
 ### .env 配置示例
+
 ```bash
 OPENAI_API_KEY="your-api-key-here"
 OPENAI_BASE_URL="https://api.openai.com/v1"

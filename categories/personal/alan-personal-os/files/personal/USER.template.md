@@ -1,4 +1,5 @@
 # USER.template.md (Family Steward Profile)
+
 - Name: __STEWARD_NAME__ (Default: Household Operator)
 - Identity: __STEWARD_TITLE__ (e.g., Family Manager)
 - Goal: __PRIMARY_HOUSEHOLD_GOAL__

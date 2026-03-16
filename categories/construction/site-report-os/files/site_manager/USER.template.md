@@ -1,4 +1,5 @@
 # USER.template.md (Lead Inspector Profile)
+
 - Name: __INSPECTOR_NAME__ (Default: Project Supervisor)
 - Identity: __INSPECTOR_TITLE__ (e.g., Lead Safety Inspector)
 - Goal: __PRIMARY_COMPLIANCE_GOAL__

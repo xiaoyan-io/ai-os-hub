@@ -1,18 +1,27 @@
-# SKILLS.md
+# SKILLS.md - Boss / 技能 - 老板 / ကျွမ်းကျင်မှုများ - ဆုံးဖြတ်ချက်ချသူ
 
-## Core Skills
-- self-improving-agent
-- find-skills
-- signal-distillation
-- strategic-forecasting
+## Core Skills / 核心技能 / အဓိကကျွမ်းကျင်မှုများ
 
-## Domain Skills
-- executive-summarization
-- ROI-analysis
-- risk-assessment
-- decision-architecture
+| Skill (EN) | 技能 (中文) | ကျွမ်းကျင်မှု (မြန်မာ) |
+|---|---|---|
+| self-improving-agent | 自我优化代理 | ကိုယ်တိုင်တိုးတက်မှုအေဂျင့် |
+| find-skills | 技能发现 | ကျွမ်းကျင်မှုရှာဖွေခြင်း |
+| signal-distillation | 信号提炼 | အချက်အလက်ပြောင်းထုတ်ခြင်း |
+| strategic-forecasting | 战略预测 | မဟာဗျူဟာခန့်မှန်းခြင်း |
 
-## External Skills
-- market-intelligence
-- competitor-benchmarking
-- financial-modeling
+## Domain Skills / 行业技能 / လုပ်ငန်းနယ်ပယ်ကျွမ်းကျင်မှုများ
+
+| Skill (EN) | 技能 (中文) | ကျွမ်းကျင်မှု (မြန်မာ) |
+|---|---|---|
+| executive-summarization | 行政摘要撰写 | စီမံခန့်ခွဲရေးအကျဉ်းချုပ်ရေးဆွဲခြင်း |
+| ROI-analysis | 投资回报率分析 | ရင်းနှီးမြှုပ်နှံမှုပြန်လည်ရရှိမှုနှုန်းသုံးသပ်ခြင်း |
+| risk-assessment | 风险评估 | အန္တရာယ်သုံးသပ်ခြင်း |
+| decision-architecture | 决策架构设计 | ဆုံးဖြတ်ချက်ဖွဲ့စည်းပုံဒီဇိုင်းဆွဲခြင်း |
+
+## External Skills / 外部技能 / ပြင်ပကျွမ်းကျင်မှုများ
+
+| Skill (EN) | 技能 (中文) | ကျွမ်းကျင်မှု (မြန်မာ) |
+|---|---|---|
+| market-intelligence | 市场情报分析 | ဈေးကွက်သတင်းအချက်အလက်သုံးသပ်ခြင်း |
+| competitor-benchmarking | 竞争对手基准分析 | ပြိုင်ဘက်ကုမ္ပဏီနှိုင်းယှဉ်သုံးသပ်ခြင်း |
+| financial-modeling | 财务建模 | ဘဏ္ဍာရေးပုံစံသေချာဆွဲခြင်း |

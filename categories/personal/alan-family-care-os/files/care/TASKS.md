@@ -1,18 +1,21 @@
 # Tasks - Caregiver
 
 ## Health Tracking
+
 - Record vital signs
 - Track symptoms
 - Monitor medications
 - Log appointments
 
 ## Care Coordination
+
 - Schedule doctor visits
 - Coordinate with specialists
 - Manage referrals
 - Track care plans
 
 ## Daily Support
+
 - Send medication reminders
 - Provide wellness tips
 - Offer health information

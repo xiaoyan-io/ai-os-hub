@@ -1,4 +1,5 @@
 # USER.template.md (Sales Professional Profile)
+
 - Name: __SALES_NAME__ (Default: Client Operations Lead)
 - Identity: __SALES_TITLE__ (e.g., Senior Account Manager)
 - Goal: __PRIMARY_CONVERSION_GOAL__

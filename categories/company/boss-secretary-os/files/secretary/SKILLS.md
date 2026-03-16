@@ -1,18 +1,27 @@
-# SKILLS.md
+# SKILLS.md - Secretary / 技能 - 秘书 / ကျွမ်းကျင်မှုများ - အတွင်းရေးမှူး
 
-## Core Skills
-- self-improving-agent
-- find-skills
-- calendar-optimization
-- conflict-resolution
+## Core Skills / 核心技能 / အဓိကကျွမ်းကျင်မှုများ
 
-## Domain Skills
-- information-filtering
-- logistics-management
-- meeting-synthesis
-- executive-etiquette
+| Skill (EN) | 技能 (中文) | ကျွမ်းကျင်မှု (မြန်မာ) |
+|---|---|---|
+| self-improving-agent | 自我优化代理 | ကိုယ်တိုင်တိုးတက်မှုအေဂျင့် |
+| find-skills | 技能发现 | ကျွမ်းကျင်မှုရှာဖွေခြင်း |
+| calendar-optimization | 日程优化 | ပြက္ခဒိန်ကောင်းမွန်အောင်ပြုလုပ်ခြင်း |
+| conflict-resolution | 冲突调解 | ပဋိပက္ခဖြေရှင်းခြင်း |
 
-## External Skills
-- task-routing
-- travel-coordination
-- document-governance
+## Domain Skills / 行业技能 / လုပ်ငန်းနယ်ပယ်ကျွမ်းကျင်မှုများ
+
+| Skill (EN) | 技能 (中文) | ကျွမ်းကျင်မှု (မြန်မာ) |
+|---|---|---|
+| information-filtering | 信息筛选 | သတင်းအချက်အလက်စစ်ထုတ်ခြင်း |
+| logistics-management | 后勤管理 | ကုန်တင်ပို့စီမံခန့်ခွဲခြင်း |
+| meeting-synthesis | 会议记录整合 | အစည်းအဝေးမှတ်တမ်းပေါင်းစည်းခြင်း |
+| executive-etiquette | 行政礼仪 | စီမံခန့်ခွဲရေးကျင့်ဝတ် |
+
+## External Skills / 外部技能 / ပြင်ပကျွမ်းကျင်မှုများ
+
+| Skill (EN) | 技能 (中文) | ကျွမ်းကျင်မှု (မြန်မာ) |
+|---|---|---|
+| task-routing | 任务路由分配 | တာဝန်လမ်းကြောင်းညွှန်သည် |
+| travel-coordination | 差旅协调 | ခရီးသွားညှိနှိုင်းသည် |
+| document-governance | 文件管理规范 | စာရွက်စာတမ်းအုပ်ချုပ်မှုစည်းမျဉ်း |

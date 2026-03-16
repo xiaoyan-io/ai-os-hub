@@ -54,17 +54,21 @@ ai-os-hub/
 ## Available OS Templates
 
 ### Company OS
+
 - **boss-secretary-os**: Executive assistant system for boss-secretary workflow
 - **alan-boss-os**: Personal-use executive template for internal summaries and directives
 
 ### Sales OS
+
 - **chat-sales-os**: AI-powered sales conversation system
 - **alan-sales-os**: Personal-use sales follow-up template for lead intake and chat closing
 
 ### Construction OS
+
 - **site-report-os**: Construction site reporting and documentation system
 
 ### Personal OS
+
 - **personal-os**: Personal AI assistant for daily tasks
 - **alan-personal-os**: Personal-use AI assistant for daily tasks, notes, planning and project organization
 - **family-care-os**: Family health and care management system
@@ -73,6 +77,7 @@ ai-os-hub/
 ## Deployment Options
 
 ### Option 1: Interactive Installation
+
 ```bash
 bash install.sh
 # or
@@ -80,12 +85,14 @@ bash installers/menu-install.sh
 ```
 
 Features:
+
 - Select category and OS from menu
 - Dynamic prompts based on template type
 - Installation summary before execution
 - Default values with Enter key
 
 ### Option 2: Direct Installation
+
 ```bash
 bash installers/install-os.sh \
   --category personal \
@@ -96,6 +103,7 @@ bash installers/install-os.sh \
 ```
 
 ### Option 3: One-Click Deployment (Recommended)
+
 ```bash
 bash deploy-os.sh \
   --category sales \
@@ -107,6 +115,7 @@ bash deploy-os.sh \
 ```
 
 Automatically handles:
+
 - Template installation
 - Credential configuration
 - OpenClaw setup
@@ -127,19 +136,21 @@ Automatically handles:
 | `--family-name` | No | Family name | - |
 | `--telegram-token` | No | Telegram bot token | - |
 | `--api-key` | Yes | LLM API key | - |
-| `--base-url` | No | API base URL | https://api.openai.com/v1 |
+| `--base-url` | No | API base URL | <https://api.openai.com/v1> |
 | `--port` | No | Gateway port (auto-assigned if not specified) | - |
 | `--daemon` | No | Run as background daemon | false |
 
 ## Running Workspaces
 
 ### Option 1: Interactive Workspace Runner
+
 ```bash
 bash run-workspace.sh
 # Lists available workspaces and prompts selection
 ```
 
 ### Option 2: Direct Workspace Start
+
 ```bash
 bash run-workspace.sh --list  # Show workspaces
 bash run-workspace.sh --workspace /root/workspace-family-care
@@ -147,11 +158,13 @@ bash run-workspace.sh --workspace /root/workspace-family-care --daemon
 ```
 
 ### Option 3: Direct Start Script
+
 ```bash
 bash installers/start-os.sh /root/workspace-family-care 8080
 ```
 
 Features:
+
 - Auto port assignment (8080-8099 range)
 - Telegram/OpenAI configuration
 - Agent creation and binding
@@ -180,6 +193,7 @@ After installation, the workspace will have:
 ## Supported Placeholders
 
 Templates support the following placeholders:
+
 - `{{COMPANY_NAME}}` - Company name
 - `{{FAMILY_NAME}}` - Family name
 - `{{NODE_NAME}}` - Node identifier
