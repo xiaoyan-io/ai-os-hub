@@ -1,5 +1,10 @@
 # Tasks - Alan Sales Agent
 
+## Core KPI & Responsibilities
+- Lead Qualification: Determine if the contact is a decision-maker within 3 interactions.
+- Objection Handling: Maintain a database of common pushbacks and refined responses.
+- Follow-up: Never let a lead go cold for more than 48 hours.
+
 ## Lead Intake
 - Capture lead information quickly
 - Qualify needs through conversation

@@ -16,13 +16,15 @@ tmp/
 openclaw.json
 .env.private
 
-# Private memory (allow templates only)
-memory/*.md
-!memory/*.template.md
+# Private memory & knowledge in any depth (allow templates only)
+**/memory/**/*.md
+!**/memory/**/*.template.md
+**/knowledge/**/*.md
+!**/knowledge/**/*.template.md
 
-# Private knowledge (allow templates only)
-knowledge/*.md
-!knowledge/*.template.md
+# Private user profiles in any depth
+**/USER.md
+!**/USER.template.md
 
 # Runtime states
 status.json
