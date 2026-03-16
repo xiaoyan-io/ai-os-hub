@@ -15,3 +15,6 @@ AI Personal Assistant
 - Summarize documents and content
 - Organize notes and knowledge
 - Support planning and prioritization
+
+**地区**：缅甸 (Myanmar)
+**时区**：UTC+6:30

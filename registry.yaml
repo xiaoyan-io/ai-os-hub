@@ -18,46 +18,67 @@ templates:
     name: Boss Secretary OS
     description: Executive assistant system for boss-secretary workflow
     version: "1.0.0"
+    paths:
+      boss: categories/company/boss-secretary-os/files/boss
+      secretary: categories/company/boss-secretary-os/files/secretary
   - id: chat-sales-os
     category: sales
     name: Chat Sales OS
     description: AI-powered sales conversation system
     version: "1.0.0"
+    paths:
+      sales: categories/sales/chat-sales-os/files/sales
   - id: site-report-os
     category: construction
     name: Site Report OS
     description: Construction site reporting and documentation system
     version: "1.0.0"
+    paths:
+      site_manager: categories/construction/site-report-os/files/site_manager
+      inspector: categories/construction/site-report-os/files/inspector
   - id: personal-os
     category: personal
     name: Personal OS
     description: Personal AI assistant for daily tasks
     version: "1.0.0"
+    paths:
+      personal: categories/personal/personal-os/files/personal
   - id: family-care-os
     category: personal
     name: Family Care OS
     description: Family health and care management system
     version: "1.0.0"
+    paths:
+      care: categories/personal/family-care-os/files/care
   - id: alan-personal-os
     category: personal
     name: Alan Personal OS
     description: Personal-use AI assistant for Alan's daily tasks and planning
     version: "1.0.0"
+    paths:
+      personal: categories/personal/alan-personal-os/files/personal
   - id: alan-family-care-os
     category: personal
     name: Alan Family Care OS
     description: Personal-use family care helper for household reminders and care coordination
     version: "1.0.0"
+    paths:
+      care: categories/personal/alan-family-care-os/files/care
   - id: alan-boss-os
     category: company
     name: Alan Boss OS
     description: Personal-use executive assistant template for internal summaries and directives
     version: "1.0.0"
+    paths:
+      boss: categories/company/alan-boss-os/files/boss
+      secretary: categories/company/alan-boss-os/files/secretary
   - id: alan-sales-os
     category: sales
     name: Alan Sales OS
     description: Personal-use sales follow-up template for lead intake and chat closing
     version: "1.0.0"
+    paths:
+      sales: categories/sales/alan-sales-os/files/sales
 
 placeholders:
   - key: COMPANY_NAME
@@ -69,4 +90,13 @@ placeholders:
     default_value: default
   - key: LANGUAGE
     description: Language code
-    default_value: en
+    default_value: zh
+  - key: TIMEZONE
+    description: Region timezone offset
+    default_value: "+06:30"
+  - key: EXECUTIVE_PRINCIPAL
+    description: Role name for the executive user
+    default_value: Executive Principal
+  - key: PROJECT_SUPERVISOR
+    description: Role name for the construction supervisor
+    default_value: Project Supervisor

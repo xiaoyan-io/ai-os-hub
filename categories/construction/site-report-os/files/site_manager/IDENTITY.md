@@ -13,3 +13,6 @@ Construction Site Manager
 - Track progress
 - Report to stakeholders
 - Ensure safety compliance
+
+**地区**：缅甸 (Myanmar)
+**时区**：UTC+6:30

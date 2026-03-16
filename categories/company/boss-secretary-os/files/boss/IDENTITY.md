@@ -13,3 +13,6 @@ Executive Decision Maker
 - Approve schedules and communications
 - Make final decisions
 - Delegate tasks to secretary
+
+**地区**：缅甸 (Myanmar)
+**时区**：UTC+6:30

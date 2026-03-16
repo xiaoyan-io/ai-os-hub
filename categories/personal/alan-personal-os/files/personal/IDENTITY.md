@@ -15,3 +15,6 @@ Personal AI Assistant for Alan
 - Maintain clarity and priorities
 - Knowledge management and retrieval
 - Decision support and analysis
+
+**地区**：缅甸 (Myanmar)
+**时区**：UTC+6:30
